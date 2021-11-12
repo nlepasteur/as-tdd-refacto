@@ -1,44 +1,61 @@
 // types
 import type { ComponentType } from 'react';
 import type { InjectedProps as PropsFromWithSetter } from './withSetter';
+import type { GridSize } from 'application/types';
 // components
 import withUserFavoriteGridSize, {
   connector,
 } from './withUserFavoriteGridSize';
 import withSetter from './withSetter';
-import GridSizeBtn from './GridSizeBtn';
+import Btn from 'components/Btn';
 
-type InjectedProps = PropsFromWithSetter;
+export type InjectedProps = PropsFromWithSetter;
 
-const GridSizeBtns: ComponentType<InjectedProps> = ({
+const disableBtn = ({
+  btnGridSize,
+  currentGridSize,
+}: {
+  btnGridSize: GridSize;
+  currentGridSize: GridSize;
+}) => currentGridSize === btnGridSize && btnGridSize !== 'default';
+
+export const GridSizeBtns: ComponentType<InjectedProps> = ({
   adjustGridSize,
-  ...props
+  currentGridSize,
 }) => (
   <ul>
     <li>
-      <GridSizeBtn handleClick={adjustGridSize} {...props} btnGridSize="small">
-        {{
-          title: <i>small</i>,
-        }}
-      </GridSizeBtn>
-    </li>
-    <li>
-      <GridSizeBtn
-        handleClick={adjustGridSize}
-        {...props}
-        btnGridSize="default"
+      <Btn
+        onClick={() => adjustGridSize('small')}
+        disabled={disableBtn({ currentGridSize, btnGridSize: 'small' })}
+        data-testid="small"
       >
         {{
-          title: <i>default</i>,
+          text: 'small icon',
         }}
-      </GridSizeBtn>
+      </Btn>
     </li>
     <li>
-      <GridSizeBtn handleClick={adjustGridSize} {...props} btnGridSize="large">
+      <Btn
+        onClick={() => adjustGridSize('default')}
+        disabled={disableBtn({ currentGridSize, btnGridSize: 'default' })}
+        data-testid="default"
+      >
         {{
-          title: <i>large</i>,
+          text: 'default icon',
         }}
-      </GridSizeBtn>
+      </Btn>
+    </li>
+    <li>
+      <Btn
+        onClick={() => adjustGridSize('large')}
+        disabled={disableBtn({ currentGridSize, btnGridSize: 'large' })}
+        data-testid="large"
+      >
+        {{
+          text: 'large icon',
+        }}
+      </Btn>
     </li>
   </ul>
 );

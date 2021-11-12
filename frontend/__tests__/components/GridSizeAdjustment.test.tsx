@@ -1,58 +1,46 @@
 // types
-import { GridSizeBtnProps } from 'views/Mosaic/MosaicFiltersBar/GridSizeAdjustment/GridSizeBtn';
+import { InjectedProps } from 'views/Mosaic/MosaicFiltersBar/GridSizeAdjustment';
 // libs
 import { render, fireEvent } from '@testing-library/react';
 // tested components
-import GridSizeBtn from 'views/Mosaic/MosaicFiltersBar/GridSizeAdjustment/GridSizeBtn';
+import { GridSizeBtns } from 'views/Mosaic/MosaicFiltersBar/GridSizeAdjustment';
 
 describe('GridSizeBtn', () => {
   describe('on click', () => {
     for (const btnGridSize of ['small', 'default', 'large'] as const) {
       it(`calls "handleClick" with "${btnGridSize}" as argument`, () => {
-        const stubProps: GridSizeBtnProps = {
-          handleClick: jest.fn(),
+        const stubInjectedProps: InjectedProps = {
           currentGridSize: 'default' as const,
-          btnGridSize,
-          children: {
-            title: 'an icon',
-          },
+          adjustGridSize: jest.fn(),
         };
-        const { getByRole } = render(<GridSizeBtn {...stubProps} />);
-        fireEvent.click(getByRole('button'));
-        expect(stubProps.handleClick).toBeCalledWith(stubProps.btnGridSize);
+        const { getByTestId } = render(<GridSizeBtns {...stubInjectedProps} />);
+        fireEvent.click(getByTestId(btnGridSize));
+        expect(stubInjectedProps.adjustGridSize).toBeCalledWith(btnGridSize);
       });
     }
   });
-
   for (const currentGridSize of ['small', 'large'] as const) {
     describe(`current grid size is ${currentGridSize}`, () => {
       it(`${currentGridSize} button is disabled`, () => {
-        const stubProps: GridSizeBtnProps = {
-          handleClick: jest.fn(),
+        const stubInjectedProps: InjectedProps = {
+          adjustGridSize: jest.fn(),
           currentGridSize,
-          btnGridSize: currentGridSize,
-          children: {
-            title: 'an icon',
-          },
         };
-        const { getByRole } = render(<GridSizeBtn {...stubProps} />);
-        expect(getByRole('button')).toHaveAttribute('disabled');
+        const { getByTestId } = render(<GridSizeBtns {...stubInjectedProps} />);
+        expect(getByTestId(currentGridSize)).toHaveAttribute('disabled');
       });
     });
   }
-
   describe('current grid is "default"', () => {
     it('"default" button isn\'t disabled', () => {
-      const stubProps: GridSizeBtnProps = {
-        handleClick: jest.fn(),
+      const stubInjectedProps: InjectedProps = {
+        adjustGridSize: jest.fn(),
         currentGridSize: 'default' as const,
-        btnGridSize: 'default' as const,
-        children: {
-          title: 'an icon',
-        },
       };
-      const { getByRole } = render(<GridSizeBtn {...stubProps} />);
-      expect(getByRole('button')).not.toHaveAttribute('disabled');
+      const { getByTestId } = render(<GridSizeBtns {...stubInjectedProps} />);
+      expect(
+        getByTestId(stubInjectedProps.currentGridSize)
+      ).not.toHaveAttribute('disabled');
     });
   });
 });
