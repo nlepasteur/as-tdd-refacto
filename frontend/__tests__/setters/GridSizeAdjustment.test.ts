@@ -1,4 +1,4 @@
-// tested fetcher
+// tested setters
 import { getUserFavoriteGridSizeHandler } from 'views/Mosaic/MosaicFiltersBar/GridSizeAdjustment/withUserFavoriteGridSize';
 
 describe('GridSizeAdjustment methods', () => {

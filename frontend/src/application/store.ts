@@ -5,15 +5,17 @@ import logger from 'redux-logger';
 // reducers
 import isLogged from './reducers/isLogged';
 import explore from './reducers/explore';
+import dimension from './reducers/dimension';
 import grid from './reducers/grid';
 
 const rootReducer = combineReducers({
   isLogged,
   explore,
+  dimension,
   grid,
 });
 
-const persistedState = loadState(['explore', 'grid']);
+const persistedState = loadState(['explore', 'dimension', 'grid']);
 
 const store = createStore(
   rootReducer,

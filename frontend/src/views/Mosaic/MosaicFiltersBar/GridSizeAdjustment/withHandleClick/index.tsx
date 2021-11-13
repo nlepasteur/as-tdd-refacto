@@ -9,12 +9,12 @@ export type InjectedProps = Omit<
   PropsFromWithUserFavoriteGridSize,
   'adjustGridSize'
 > & {
-  adjustGridSize(gridSize: GridSize): void;
+  handleClick(gridSize: GridSize): void;
 };
 
-const withSetter = (UnwrappedComponent: ComponentType<InjectedProps>) => {
-  function WithSetter(props: PropsFromWithUserFavoriteGridSize) {
-    const adjustGridSize = (gridSize: GridSize) => {
+const withHandleClick = (UnwrappedComponent: ComponentType<InjectedProps>) => {
+  function WithHandleClick(props: PropsFromWithUserFavoriteGridSize) {
+    const handleClick = (gridSize: GridSize) => {
       const currentGridSize =
         props.currentGridSize === 'small' || props.currentGridSize === 'large'
           ? 'default'
@@ -25,11 +25,11 @@ const withSetter = (UnwrappedComponent: ComponentType<InjectedProps>) => {
     return (
       <UnwrappedComponent
         currentGridSize={props.currentGridSize}
-        adjustGridSize={adjustGridSize}
+        handleClick={handleClick}
       />
     );
   }
-  return WithSetter;
+  return WithHandleClick;
 };
 
-export default withSetter;
+export default withHandleClick;

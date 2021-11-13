@@ -1,17 +1,26 @@
 // types
 import type { ComponentType } from 'react';
-import type { InjectedProps as PropsFromWithSetter } from './withSetter';
+import type { InjectedProps as PropsFromWithHandleClick } from './withHandleClick';
 import type { GridSize } from 'application/types';
+// libs
+import { nanoid } from 'nanoid';
 // components
-import withUserFavoriteGridSize, {
-  connector,
-} from './withUserFavoriteGridSize';
-import withSetter from './withSetter';
+import withUserFavoriteGridSize, { connector } from './withMappedStore';
+import withSetter from './withHandleClick';
 import Btn from 'components/Btn';
+// icons
+import { BsGrid3X3Gap } from 'react-icons/bs';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
-export type InjectedProps = PropsFromWithSetter;
+export type InjectedProps = PropsFromWithHandleClick;
 
-const disableBtn = ({
+const icons = {
+  small: AiOutlineMinus,
+  default: BsGrid3X3Gap,
+  large: AiOutlinePlus,
+};
+
+const disable = ({
   btnGridSize,
   currentGridSize,
 }: {
@@ -20,43 +29,26 @@ const disableBtn = ({
 }) => currentGridSize === btnGridSize && btnGridSize !== 'default';
 
 export const GridSizeBtns: ComponentType<InjectedProps> = ({
-  adjustGridSize,
+  handleClick,
   currentGridSize,
 }) => (
   <ul>
-    <li>
-      <Btn
-        onClick={() => adjustGridSize('small')}
-        disabled={disableBtn({ currentGridSize, btnGridSize: 'small' })}
-        data-testid="small"
-      >
-        {{
-          text: 'small icon',
-        }}
-      </Btn>
-    </li>
-    <li>
-      <Btn
-        onClick={() => adjustGridSize('default')}
-        disabled={disableBtn({ currentGridSize, btnGridSize: 'default' })}
-        data-testid="default"
-      >
-        {{
-          text: 'default icon',
-        }}
-      </Btn>
-    </li>
-    <li>
-      <Btn
-        onClick={() => adjustGridSize('large')}
-        disabled={disableBtn({ currentGridSize, btnGridSize: 'large' })}
-        data-testid="large"
-      >
-        {{
-          text: 'large icon',
-        }}
-      </Btn>
-    </li>
+    {(['small', 'default', 'large'] as const).map((btnGridSize) => {
+      const Icon = icons[btnGridSize];
+      return (
+        <li key={nanoid()}>
+          <Btn
+            onClick={() => handleClick(btnGridSize)}
+            disabled={disable({ currentGridSize, btnGridSize })}
+            data-testid={btnGridSize}
+          >
+            {{
+              text: <Icon />,
+            }}
+          </Btn>
+        </li>
+      );
+    })}
   </ul>
 );
 

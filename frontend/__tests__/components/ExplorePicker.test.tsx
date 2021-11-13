@@ -1,28 +1,26 @@
-// types
-import { Explore } from 'application/types';
 // libs
 import { render } from '@testing-library/react';
 // tested components
-import ExploreBtn from 'views/Mosaic/MosaicFiltersBar/ExplorePicker/ExploreBtn';
+import { Explores } from 'views/Mosaic/MosaicFiltersBar/ExplorePicker';
 
-describe('Explore', () => {
-  for (const [explore, expected] of [
-    ['community', /community/i],
-    ['trending', /trending/i],
-    ['latest', /latest/i],
-    ['following', /following/i],
-  ]) {
-    describe(`explore prop is "${explore}"`, () => {
-      it(`displays "${expected}"`, () => {
+describe('ExplorePicker', () => {
+  for (const explore of [/community/i, /trending/i, /latest/i, /following/i]) {
+    describe('user is logged', () => {
+      it(`displays "${explore}"`, () => {
         const { getByText } = render(
-          <ExploreBtn explore={explore as Explore} handleClick={jest.fn()}>
-            {{
-              title: explore,
-            }}
-          </ExploreBtn>
+          <Explores isLogged handleClick={jest.fn()} />
         );
-        expect(getByText(expected)).toBeInTheDocument();
+        expect(getByText(explore)).toBeInTheDocument();
       });
     });
   }
+
+  describe('user is not logged', () => {
+    it('does not display "following"', () => {
+      const { queryByText } = render(
+        <Explores isLogged={false} handleClick={jest.fn()} />
+      );
+      expect(queryByText('following')).not.toBeInTheDocument();
+    });
+  });
 });

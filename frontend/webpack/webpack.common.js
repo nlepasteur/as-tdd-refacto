@@ -9,6 +9,7 @@ module.exports = {
   resolve: {
     alias: {
       views: path.resolve(__dirname, '..', 'src/views'),
+      components: path.resolve(__dirname, '..', 'src/components'),
       application: path.resolve(__dirname, '..', 'src/application'),
       utils: path.resolve(__dirname, '..', 'src/utils'),
     },

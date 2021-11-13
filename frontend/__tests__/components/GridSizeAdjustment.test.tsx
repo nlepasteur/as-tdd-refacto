@@ -11,11 +11,11 @@ describe('GridSizeBtn', () => {
       it(`calls "handleClick" with "${btnGridSize}" as argument`, () => {
         const stubInjectedProps: InjectedProps = {
           currentGridSize: 'default' as const,
-          adjustGridSize: jest.fn(),
+          handleClick: jest.fn(),
         };
         const { getByTestId } = render(<GridSizeBtns {...stubInjectedProps} />);
         fireEvent.click(getByTestId(btnGridSize));
-        expect(stubInjectedProps.adjustGridSize).toBeCalledWith(btnGridSize);
+        expect(stubInjectedProps.handleClick).toBeCalledWith(btnGridSize);
       });
     }
   });
@@ -23,7 +23,7 @@ describe('GridSizeBtn', () => {
     describe(`current grid size is ${currentGridSize}`, () => {
       it(`${currentGridSize} button is disabled`, () => {
         const stubInjectedProps: InjectedProps = {
-          adjustGridSize: jest.fn(),
+          handleClick: jest.fn(),
           currentGridSize,
         };
         const { getByTestId } = render(<GridSizeBtns {...stubInjectedProps} />);
@@ -34,7 +34,7 @@ describe('GridSizeBtn', () => {
   describe('current grid is "default"', () => {
     it('"default" button isn\'t disabled', () => {
       const stubInjectedProps: InjectedProps = {
-        adjustGridSize: jest.fn(),
+        handleClick: jest.fn(),
         currentGridSize: 'default' as const,
       };
       const { getByTestId } = render(<GridSizeBtns {...stubInjectedProps} />);
