@@ -11,6 +11,8 @@ module.exports = {
       views: path.resolve(__dirname, '..', 'src/views'),
       components: path.resolve(__dirname, '..', 'src/components'),
       application: path.resolve(__dirname, '..', 'src/application'),
+      HOCs: path.resolve(__dirname, '..', 'src/HOCs'),
+      hooks: path.resolve(__dirname, '..', 'src/hooks'),
       utils: path.resolve(__dirname, '..', 'src/utils'),
     },
     extensions: ['.tsx', '.ts', '.js'],

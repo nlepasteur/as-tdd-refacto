@@ -36,7 +36,7 @@ class Toggleable extends Component<Props, State> {
 
 const updateShowState = (prevState: State) => ({ show: !prevState.show });
 
-type InjectedProps = ToggleableComponentProps;
+export type InjectedProps = ToggleableComponentProps;
 
 const withToggle = <P extends object>(
   UnwrappedComponent: ComponentType<P & InjectedProps>

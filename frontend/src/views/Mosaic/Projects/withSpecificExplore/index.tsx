@@ -32,7 +32,7 @@ type Explore = Community | Trending | Latest | Following;
 
 type IsChannel = { isChannel: true };
 
-type InjectedProps = Partial<{
+export type InjectedProps = Partial<{
   isExplore: true;
   community: true;
   trending: true;
@@ -49,12 +49,6 @@ const withSpecificExplore = (
   function WithSpecificExplore(props: InjectedProps) {
     return <UnwrappedComponent {...props} />;
   }
-
-  const wrappedComponentName =
-    UnwrappedComponent.displayName || UnwrappedComponent.name || 'Component';
-
-  WithSpecificExplore.displayName = `withSpecificExplore(${wrappedComponentName})`;
-
   return WithSpecificExplore;
 };
 

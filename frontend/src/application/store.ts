@@ -7,15 +7,31 @@ import isLogged from './reducers/isLogged';
 import explore from './reducers/explore';
 import dimension from './reducers/dimension';
 import grid from './reducers/grid';
+import medias from './reducers/medias';
+import mediums from './reducers/mediums';
+import projectsState from './reducers/projects';
+import shuffledProjects from './reducers/shuffledProjects';
+import page from './reducers/page';
 
 const rootReducer = combineReducers({
   isLogged,
   explore,
   dimension,
   grid,
+  medias,
+  ...mediums,
+  projectsState,
+  shuffledProjects,
+  page,
 });
 
-const persistedState = loadState(['explore', 'dimension', 'grid']);
+const persistedState = loadState([
+  'explore',
+  'dimension',
+  'grid',
+  'medias',
+  'mediums',
+]);
 
 const store = createStore(
   rootReducer,

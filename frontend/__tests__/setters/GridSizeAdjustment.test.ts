@@ -1,5 +1,5 @@
 // tested setters
-import { getUserFavoriteGridSizeHandler } from 'views/Mosaic/MosaicFiltersBar/GridSizeAdjustment/withUserFavoriteGridSize';
+import { getUserFavoriteGridSizeHandler } from 'src/views/Mosaic/MosaicFiltersBar/GridSizeAdjustment/withMappedStore';
 
 describe('GridSizeAdjustment methods', () => {
   describe('getUserFavoriteGridSize', () => {

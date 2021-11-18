@@ -8,7 +8,11 @@ describe('ExplorePicker', () => {
     describe('user is logged', () => {
       it(`displays "${explore}"`, () => {
         const { getByText } = render(
-          <Explores isLogged handleClick={jest.fn()} />
+          <Explores
+            isLogged
+            setExplore={jest.fn()}
+            currentExplore="community"
+          />
         );
         expect(getByText(explore)).toBeInTheDocument();
       });
@@ -18,7 +22,11 @@ describe('ExplorePicker', () => {
   describe('user is not logged', () => {
     it('does not display "following"', () => {
       const { queryByText } = render(
-        <Explores isLogged={false} handleClick={jest.fn()} />
+        <Explores
+          isLogged={false}
+          setExplore={jest.fn()}
+          currentExplore="community"
+        />
       );
       expect(queryByText('following')).not.toBeInTheDocument();
     });

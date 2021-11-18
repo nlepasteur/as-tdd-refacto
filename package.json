@@ -7,7 +7,8 @@
     "lint": "eslint --fix \"*/src/**/*.{js,jsx,ts,tsx,json}\"",
     "test:components": "jest --watch --config=frontend/jest.config.ts --testPathPattern=__tests__/components",
     "test:hooks": "jest --watch --config=frontend/jest.config.ts --testPathPattern=use",
-    "test:ers": "jest --watch --config=frontend/jest.config.ts --testPathPattern=__tests__/gettersSetters"
+    "test:utils": "jest --watch --config=frontend/jest.config.ts --testPathPattern=__tests__/utils",
+    "test:setters": "jest --watch --config=frontend/jest.config.ts --testPathPattern=__tests__/setters"
   },
   "keywords": [],
   "author": "",

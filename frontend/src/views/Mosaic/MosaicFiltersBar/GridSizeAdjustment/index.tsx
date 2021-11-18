@@ -1,12 +1,12 @@
 // types
 import type { ComponentType } from 'react';
-import type { InjectedProps as PropsFromWithHandleClick } from './withHandleClick';
+import type { InjectedProps as PropsFromWithHandleClick } from './withSetter';
 import type { GridSize } from 'application/types';
 // libs
 import { nanoid } from 'nanoid';
 // components
 import withUserFavoriteGridSize, { connector } from './withMappedStore';
-import withSetter from './withHandleClick';
+import withSetter from './withSetter';
 import Btn from 'components/Btn';
 // icons
 import { BsGrid3X3Gap } from 'react-icons/bs';
@@ -29,7 +29,7 @@ const disable = ({
 }) => currentGridSize === btnGridSize && btnGridSize !== 'default';
 
 export const GridSizeBtns: ComponentType<InjectedProps> = ({
-  handleClick,
+  adjustGridSize,
   currentGridSize,
 }) => (
   <ul>
@@ -38,7 +38,7 @@ export const GridSizeBtns: ComponentType<InjectedProps> = ({
       return (
         <li key={nanoid()}>
           <Btn
-            onClick={() => handleClick(btnGridSize)}
+            onClick={() => adjustGridSize(btnGridSize)}
             disabled={disable({ currentGridSize, btnGridSize })}
             data-testid={btnGridSize}
           >

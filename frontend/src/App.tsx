@@ -6,6 +6,10 @@ import store from 'application/store';
 import GridSizeAdjustment from 'views/Mosaic/MosaicFiltersBar/GridSizeAdjustment';
 import withSpecificExplore from 'views/Mosaic/Projects/withSpecificExplore';
 import ExplorePicker from 'views/Mosaic/MosaicFiltersBar/ExplorePicker';
+import DimensionPicker from 'views/Mosaic/MosaicFiltersBar/DimensionPicker';
+import MediasMediumsDropDownPicker from 'views/Mosaic/MosaicFiltersBar/MediasMediumsDropDownPicker';
+import ProjectsWithInfiniteScroll from 'views/Mosaic/Projects/ProjectsWithInfiniteScroll';
+import ProjectsWithoutInfiniteScroll from 'views/Mosaic/Projects/ProjectsWithoutInfiniteScroll';
 
 const Wrapped = (
   props: Partial<{
@@ -18,14 +22,15 @@ const Wrapped = (
   }>
 ) => <div>yo</div>;
 
-const SpecificExplore = withSpecificExplore(Wrapped);
-
 const App = () => {
   return (
     <Provider store={store}>
-      <GridSizeAdjustment />
+      {/* <GridSizeAdjustment /> */}
       <ExplorePicker />
-      {/* <SpecificExplore isExplore trending /> */}
+      {/* <DimensionPicker /> */}
+      {/* <MediasMediumsDropDownPicker /> */}
+      {/* <ProjectsWithInfiniteScroll /> */}
+      <ProjectsWithoutInfiniteScroll />
     </Provider>
   );
 };
