@@ -1,7 +1,7 @@
 // types
 import type { ComponentType } from 'react';
 import type { ConnectedProps } from 'react-redux';
-import type { RootState, GridSize, AppThunkDispatch } from 'application/types';
+import type { RootState, GridSize } from 'application/types';
 // libs
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -37,8 +37,6 @@ export const getUserFavoriteGridSizeHandler = (args: {
     args.thunk();
   }
 };
-
-// export type GridSizeFetcherHandler = typeof getUserFavoriteGridSizeHandler;
 
 const withUserFavoriteGridSize = (
   UnwrappedComponent: ComponentType<InjectedProps>

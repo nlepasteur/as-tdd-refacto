@@ -7,11 +7,7 @@ import Btn from 'components/Btn';
 
 type InjectedProps = PropsFromWithMappedStore;
 
-const Button: ComponentType<InjectedProps> = ({
-  pickableCount,
-  mediumsFetchStatus,
-  toggle,
-}) => (
+const Button: ComponentType<InjectedProps> = ({ pickableCount, toggle }) => (
   <Btn onClick={toggle}>
     {{
       text: 'All medias',

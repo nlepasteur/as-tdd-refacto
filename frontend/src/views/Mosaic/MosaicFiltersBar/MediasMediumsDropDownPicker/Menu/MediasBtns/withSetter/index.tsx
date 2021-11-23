@@ -7,7 +7,7 @@ import updateStringPresenceDepending from 'utils/updateStringPresenceDepending';
 
 export type InjectedProps = Omit<
   PropsFromWithMappedStore,
-  'updatePickedMedias'
+  'updatePickedMedias' | 'resetPage' | 'clearProjects'
 > & {
   pickMedia(media: string): void;
 };
@@ -15,10 +15,13 @@ export type InjectedProps = Omit<
 const withSetter = (UnwrappedComponent: ComponentType<InjectedProps>) => {
   const WithSetter = ({
     updatePickedMedias,
+    clearProjects,
+    resetPage,
     ...props
   }: PropsFromWithMappedStore) => {
     const pickMedia: InjectedProps['pickMedia'] = (media) => {
-      // + clearProjects
+      clearProjects();
+      resetPage();
       updatePickedMedias(media);
       updateLocalStorage(
         'medias',

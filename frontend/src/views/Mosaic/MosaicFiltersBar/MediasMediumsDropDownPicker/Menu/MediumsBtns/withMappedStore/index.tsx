@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { useEffect } from 'react';
 // action creators
 import { getMediums, updatePickedMediums } from 'application/actions/mediums';
+import { clearProjects } from 'application/actions/projects';
+import { resetPage } from 'application/actions/page';
 
 const mapState = ({ mediums, mediumsState }: RootState) => ({
   pickedMediums: mediums,
@@ -17,6 +19,8 @@ const mapDispatch = (dispatch: any) => ({
   getMediums: () => dispatch(getMediums()),
   updatePickedMediums: (medium: string) =>
     dispatch(updatePickedMediums(medium)),
+  clearProjects: () => dispatch(clearProjects()),
+  resetPage: () => dispatch(resetPage()),
 });
 
 export const connector = connect(mapState, mapDispatch);
@@ -30,8 +34,10 @@ export type InjectedProps = Omit<PropsFromRedux, 'getMediums'> & {
 const withMappedStore = (UnwrappedComponent: ComponentType<InjectedProps>) => {
   const WithMappedStore = ({ getMediums, ...props }: PropsFromRedux) => {
     useEffect(() => {
-      getMediums();
-    }, [getMediums]);
+      if (!props.mediums.length) {
+        getMediums();
+      }
+    }, [getMediums, props.mediums]);
     return <UnwrappedComponent {...props} />;
   };
 

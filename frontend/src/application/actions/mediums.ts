@@ -54,7 +54,7 @@ export const getMediums =
       })();
     } catch (error) {
       console.log('error: ', error);
-      dispatch(getMediumsFailure(error.message));
+      // dispatch(getMediumsFailure(error.message));
     }
   };
 

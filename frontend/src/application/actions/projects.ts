@@ -60,7 +60,7 @@ export const getProjectsSuccess: GetSuccess<Project, 'projects'> = (
 export const getProjects =
   (url: string): ThunkAction<void, RootState, null, AnyAction> =>
   (dispatch, getState) => {
-    console.log('url from thunk: ', url);
+    // console.log('url from thunk: ', url);
     const { explore } = getState();
     dispatch(getProjectsFetching());
     // explore === 'community' && dispatch(clearProjects());
@@ -70,14 +70,15 @@ export const getProjects =
         // const data = await response?.json();
         const data = [...Array(100)].map((_, i) => ({
           ...stubProject,
-          id: String(i),
-          // id: nanoid(),
+          // id: String(i),
+          id: nanoid(),
         }));
         explore === 'community' && dispatch(setShuffledProjects(shuffle(data)));
         dispatch(getProjectsSuccess(data));
       })();
     } catch (error) {
-      dispatch(getProjectsFailure(error.message));
+      console.log('error message');
+      // dispatch(getProjectsFailure(error.message));
     }
   };
 

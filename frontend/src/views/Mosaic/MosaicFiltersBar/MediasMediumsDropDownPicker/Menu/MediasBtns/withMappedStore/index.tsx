@@ -6,6 +6,8 @@ import type { RootState, AppDispatch, Media } from 'application/types';
 import { connect } from 'react-redux';
 // action creators
 import { updatePickedMedias } from 'application/actions/medias';
+import { clearProjects } from 'application/actions/projects';
+import { resetPage } from 'application/actions/page';
 
 const mapState = ({ medias }: RootState) => ({
   pickedMedias: medias,
@@ -13,6 +15,8 @@ const mapState = ({ medias }: RootState) => ({
 
 const mapDispatch = (dispatch: AppDispatch) => ({
   updatePickedMedias: (media: string) => dispatch(updatePickedMedias(media)),
+  clearProjects: () => dispatch(clearProjects()),
+  resetPage: () => dispatch(resetPage()),
 });
 
 export const connector = connect(mapState, mapDispatch);

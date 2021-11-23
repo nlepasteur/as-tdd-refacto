@@ -6,6 +6,12 @@ module.exports = {
   entry: {
     main: path.resolve(__dirname, '..', 'src/index.tsx'),
   },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'build'),
+    clean: true,
+    publicPath: '/',
+  },
   resolve: {
     alias: {
       views: path.resolve(__dirname, '..', 'src/views'),

@@ -6,4 +6,4 @@ export const setShuffledProjects = (payload: Project[]) =>
     payload,
   } as const);
 
-export type ShuffledProjectsActions = ReturnType<typeof setShuffledProjects>;
+export type ShuffledProjectsAction = ReturnType<typeof setShuffledProjects>;

@@ -5,9 +5,8 @@ import type { NavigateFunction } from 'react-router-dom';
 import type { AppDispatch, RootState } from 'application/store';
 import type { Explore } from 'application/reducers/explore';
 // store utils
-import { setExplore } from 'application/actions/explore';
-// import { clearProjects } from 'application/actions/projects';
-// import { resetPagination } from 'application/actions/pagination';
+import { clearProjects } from 'application/actions/projects';
+import { resetPage } from 'application/actions/page';
 // libs
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -19,9 +18,8 @@ const mapState = ({ isLogged, dimension, explore }: RootState) => ({
 });
 
 const mapDispatch = (dispatch: AppDispatch) => ({
-  setExplore: (explore: Explore) => dispatch(setExplore(explore)),
-  //   resetPagination: () => dispatch(resetPagination()),
-  //   clearProjects: () => dispatch(clearProjects()),
+  resetPage: () => dispatch(resetPage()),
+  clearProjects: () => dispatch(clearProjects()),
 });
 
 export const connector = connect(mapState, mapDispatch);

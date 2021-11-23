@@ -26,11 +26,11 @@ const mediumsStateReducer = (
   action: FetchMediumsAction
 ): MediumsState => {
   switch (action.type) {
-    case 'MEDIUMS_FETCHING':
+    case 'GET_MEDIUMS_FETCHING':
       return { ...state, status: 'fetching', error: null, data: [] };
-    case 'MEDIUMS_FAILURE':
+    case 'GET_MEDIUMS_FAILURE':
       return { ...state, status: 'failure', error: action.payload, data: [] };
-    case 'MEDIUMS_SUCCESS':
+    case 'GET_MEDIUMS_SUCCESS':
       return { ...state, status: 'success', error: null, data: action.payload };
     default:
       return state;

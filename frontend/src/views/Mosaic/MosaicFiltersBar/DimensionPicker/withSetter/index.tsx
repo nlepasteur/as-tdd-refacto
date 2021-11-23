@@ -1,16 +1,16 @@
 // types
 import type { ComponentType } from 'react';
 import type { Dimension } from 'application/types';
-import type { InjectedProps as PropsFromWithMappedStore } from '../withMappedStore';
+import type { InjectedProps as PropsFromWithMappedStore } from '../withMappedStoreV2';
 // utils
-import updateLocalStorage from 'utils/updateLocalStorage';
+// import updateLocalStorage from 'utils/updateLocalStorage';
 import createExploreDimensionPathname from 'utils/createExploreDimensionPathname';
 
 export type InjectedProps = Pick<
   PropsFromWithMappedStore,
   'currentDimension'
 > & {
-  setDimension(dimension: Dimension): void;
+  handleDimensionClick(dimension: Dimension): void;
 };
 
 const withSetter = (UnwrappedComponent: ComponentType<InjectedProps>) => {
@@ -19,14 +19,21 @@ const withSetter = (UnwrappedComponent: ComponentType<InjectedProps>) => {
     navigate,
     ...props
   }: PropsFromWithMappedStore) {
-    const setDimension: InjectedProps['setDimension'] = (dimension) => {
-      props.setDimension(dimension);
-      updateLocalStorage('dimension', dimension);
+    const handleDimensionClick: InjectedProps['handleDimensionClick'] = (
+      dimension
+    ) => {
+      props.clearProjects();
+      props.resetPage();
       navigate(
         createExploreDimensionPathname({ explore: currentExplore, dimension })
       );
     };
-    return <UnwrappedComponent {...props} setDimension={setDimension} />;
+    return (
+      <UnwrappedComponent
+        {...props}
+        handleDimensionClick={handleDimensionClick}
+      />
+    );
   }
   return WithSetter;
 };

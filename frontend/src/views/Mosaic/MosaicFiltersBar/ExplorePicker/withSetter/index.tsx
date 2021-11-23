@@ -3,30 +3,35 @@ import type { ComponentType } from 'react';
 import type { Explore } from 'application/types';
 import { InjectedProps as PropsFromWithMappedStore } from '../withMappedStore';
 // utils
-import updateLocalStorage from 'utils/updateLocalStorage';
 import createExploreDimensionPathname from 'utils/createExploreDimensionPathname';
 
-export type InjectedProps = Omit<
+export type InjectedProps = Pick<
   PropsFromWithMappedStore,
-  'setExplore' | 'currentDimension' | 'navigate'
+  'currentExplore' | 'isLogged'
 > & {
-  setExplore(explore: Explore): void;
+  handleExploreClick(explore: Explore): void;
 };
 
 const withSetter = (UnwrappedComponent: ComponentType<InjectedProps>) => {
   function WithSetter({
     navigate,
     currentDimension,
+    clearProjects,
+    resetPage,
     ...props
   }: PropsFromWithMappedStore) {
-    const setExplore: InjectedProps['setExplore'] = (explore) => {
-      props.setExplore(explore);
-      updateLocalStorage('explore', explore);
+    const handleExploreClick: InjectedProps['handleExploreClick'] = (
+      explore
+    ) => {
+      clearProjects();
+      resetPage();
       navigate(
         createExploreDimensionPathname({ explore, dimension: currentDimension })
       );
     };
-    return <UnwrappedComponent {...props} setExplore={setExplore} />;
+    return (
+      <UnwrappedComponent {...props} handleExploreClick={handleExploreClick} />
+    );
   }
   const wrappedComponentName =
     UnwrappedComponent.displayName || UnwrappedComponent.name || 'Component';

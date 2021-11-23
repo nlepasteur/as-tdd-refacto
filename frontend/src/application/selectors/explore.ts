@@ -1,3 +1,3 @@
 import { RootState } from '../store';
 
-export const getPickedExplore = (state: RootState) => state.explore;
+export const getCurrentExplore = (state: RootState) => state.explore;
