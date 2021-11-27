@@ -57,3 +57,50 @@ export interface GetFailure<S extends string> {
 export interface GetSuccess<D, S extends string> {
   (payload: D[]): FetchSuccess<D, S>;
 }
+
+export type GenericGetRequestStatus =
+  | 'INIT'
+  | 'FETCHING'
+  | 'FAILURE'
+  | 'SUCCESS';
+
+export type GenericFetchFetching = {
+  type: Exclude<GenericGetRequestStatus, 'FAILURE' | 'SUCCESS'>;
+};
+
+export type GenericFetchFailure = {
+  type: Exclude<GenericGetRequestStatus, 'INIT' | 'FETCHING' | 'SUCCESS'>;
+  payload: string;
+};
+
+export type GenericFetchSuccess<D> = {
+  type: Exclude<GenericGetRequestStatus, 'INIT' | 'FETCHING' | 'FAILURE'>;
+  payload: D[];
+};
+
+export type GenericFetchAction<D> =
+  | GenericFetchFetching
+  | GenericFetchFailure
+  | GenericFetchSuccess<D>;
+
+export interface GenericGetFetching {
+  (): GenericFetchFetching;
+}
+
+export interface GenericGetFailure {
+  (payload: string): GenericFetchFailure;
+}
+
+export interface GenericGetSuccess<D> {
+  (payload: D[]): GenericFetchSuccess<D>;
+}
+
+export type PartialFetchState = {
+  status: FetchStatus;
+  error: null | string;
+};
+
+export type PartialFetchStateAction =
+  | { type: 'FETCHING' }
+  | { type: 'FAILURE'; payload: string }
+  | { type: 'SUCCESS' };

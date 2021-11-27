@@ -24,10 +24,17 @@ export const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export type InjectedProps = PropsFromRedux & { navigate: NavigateFunction };
+type ExplorePickerLocation =
+  | { mosaicFiltersBar: true; mediasMediumsDropDownPicker?: never }
+  | { mosaicFiltersBar?: never; mediasMediumsDropDownPicker: true };
+
+export type InjectedProps = PropsFromRedux &
+  ExplorePickerLocation & {
+    navigate: NavigateFunction;
+  };
 
 const withMappedStore = (UnwrappedComponent: ComponentType<InjectedProps>) => {
-  function WithMappedStore(props: PropsFromRedux) {
+  function WithMappedStore(props: PropsFromRedux & ExplorePickerLocation) {
     const navigate = useNavigate();
     return <UnwrappedComponent navigate={navigate} {...props} />;
   }

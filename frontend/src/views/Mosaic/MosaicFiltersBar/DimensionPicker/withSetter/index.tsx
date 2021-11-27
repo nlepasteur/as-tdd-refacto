@@ -6,9 +6,9 @@ import type { InjectedProps as PropsFromWithMappedStore } from '../withMappedSto
 // import updateLocalStorage from 'utils/updateLocalStorage';
 import createExploreDimensionPathname from 'utils/createExploreDimensionPathname';
 
-export type InjectedProps = Pick<
+export type InjectedProps = Omit<
   PropsFromWithMappedStore,
-  'currentDimension'
+  'currentExplore' | 'navigate' | 'clearProjects' | 'resetPage'
 > & {
   handleDimensionClick(dimension: Dimension): void;
 };
@@ -17,13 +17,15 @@ const withSetter = (UnwrappedComponent: ComponentType<InjectedProps>) => {
   function WithSetter({
     currentExplore,
     navigate,
+    resetPage,
+    clearProjects,
     ...props
   }: PropsFromWithMappedStore) {
     const handleDimensionClick: InjectedProps['handleDimensionClick'] = (
       dimension
     ) => {
-      props.clearProjects();
-      props.resetPage();
+      clearProjects();
+      resetPage();
       navigate(
         createExploreDimensionPathname({ explore: currentExplore, dimension })
       );

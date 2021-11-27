@@ -10,11 +10,10 @@ import classnames from 'classnames';
 import createExploreDimensionPathname from 'utils/createExploreDimensionPathname';
 // components
 import withMappedStore, { connector } from './withMappedStore';
-import withMappedStoreV2, {
-  connector as connectorV2,
-} from './withMappedStoreV2';
 import withHandleClick from './withSetter';
 import Btn from 'components/Btn';
+// style
+import './ExplorePicker.css';
 
 type InjectedProps = PropsFromWithHandleClick;
 
@@ -23,14 +22,20 @@ export const Explores: ComponentType<InjectedProps> = ({
   currentExplore,
   handleExploreClick,
 }) => (
-  <ul>
+  <ul className="explore-list">
     {(['community', 'trending', 'latest', 'following'] as const)
       .filter((explore) => !(!isLogged && explore === 'following'))
       .map((explore) => (
-        <li key={nanoid()}>
+        <li
+          key={nanoid()}
+          className={classnames(
+            'explore-list__item',
+            currentExplore === explore && 'explore-list__item--active'
+          )}
+        >
           <Btn
             onClick={() => handleExploreClick(explore)}
-            className={classnames(explore === currentExplore && 'active')}
+            className="explore-btn"
           >
             {{
               text: explore,
@@ -54,7 +59,10 @@ const ExploresV2: ComponentType<InjectedPropsV2> = ({
       .map((explore) => (
         <li
           key={nanoid()}
-          className={classnames(explore === currentExplore && 'active')}
+          className={classnames(
+            'explore-list__item',
+            currentExplore === explore && 'explore-list__item--active'
+          )}
         >
           <Link
             to={createExploreDimensionPathname({

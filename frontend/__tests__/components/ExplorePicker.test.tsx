@@ -10,7 +10,7 @@ describe('ExplorePicker', () => {
         const { getByText } = render(
           <Explores
             isLogged
-            setExplore={jest.fn()}
+            handleExploreClick={jest.fn()}
             currentExplore="community"
           />
         );
@@ -24,7 +24,7 @@ describe('ExplorePicker', () => {
       const { queryByText } = render(
         <Explores
           isLogged={false}
-          setExplore={jest.fn()}
+          handleExploreClick={jest.fn()}
           currentExplore="community"
         />
       );

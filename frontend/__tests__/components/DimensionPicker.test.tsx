@@ -8,7 +8,7 @@ describe('DimensionBtns', () => {
     it(`displays ${dimension}`, () => {
       const stubInjectedProps = {
         currentDimension: 'all',
-        setDimension: jest.fn(),
+        handleDimensionClick: jest.fn(),
       } as const;
       const { getByText } = render(<DimensionBtns {...stubInjectedProps} />);
       expect(getByText(dimension)).toBeInTheDocument();

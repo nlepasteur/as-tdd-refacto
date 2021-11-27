@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import classnames from 'classnames';
 // utils
+import createClasses from 'utils/createClasses';
 import createExploreDimensionPathname from 'utils/createExploreDimensionPathname';
 // components
 import withMappedStoreV2, {
@@ -14,20 +15,32 @@ import withMappedStoreV2, {
 } from './withMappedStoreV2';
 import Btn from 'components/Btn';
 import withSetter from './withSetter';
+// style
+import './DimensionPicker.css';
 
 type InjectedProps = PropsFromWithSetter;
 
 export const DimensionBtns: ComponentType<InjectedProps> = ({
   currentDimension,
   handleDimensionClick,
+  children,
+  ...props
 }) => (
-  <ul>
+  <ul
+    className={classnames(
+      'dimension-list',
+      createClasses({ ...props }, 'dimension-list--')
+    )}
+  >
     {(['all', '2d', '3d'] as const).map((dimension) => (
-      <li key={nanoid()}>
-        <Btn
-          onClick={() => handleDimensionClick(dimension)}
-          className={classnames(dimension === currentDimension && 'active')}
-        >
+      <li
+        key={nanoid()}
+        className={classnames(
+          'dimension-list__item',
+          currentDimension === dimension && 'dimension-list__item--active'
+        )}
+      >
+        <Btn onClick={() => handleDimensionClick(dimension)}>
           {{
             text: dimension,
           }}

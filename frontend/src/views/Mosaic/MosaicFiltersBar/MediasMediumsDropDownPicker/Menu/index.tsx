@@ -1,6 +1,8 @@
 // components
 import Medias from './MediasBtns';
 import Mediums from './MediumsBtns';
+// style
+import './Menu.css';
 
 const medias = [
   {
@@ -14,7 +16,7 @@ const medias = [
 ];
 
 const Menu = () => (
-  <div>
+  <div className="medias-mediums__menu">
     <Medias medias={medias} />
     <Mediums />
   </div>
