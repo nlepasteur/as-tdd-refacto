@@ -1,33 +1,39 @@
 // types
 import type { ComponentType, ReactNode } from 'react';
-import type { InjectedProps as PropsFromWithSetter } from '../../../withSetter';
+import type { InjectedProps as PropsFromMenu } from '../../Menu';
 // libs
 import { nanoid } from 'nanoid';
+import classnames from 'classnames';
+// utils
+import createClasses from 'utils/createClasses';
 // component
 import ChannelItem from '../ChannelItem';
 
 export type InjectedProps = Pick<
-  PropsFromWithSetter,
-  'followChannel' | 'channels'
+  PropsFromMenu,
+  'followChannel' | 'channels' | 'isLogged' | 'followedChannels'
 > & { children: ReactNode; followedLength: number };
 
 const ChannelsList: ComponentType<InjectedProps> = ({
   channels,
-  followChannel,
   children,
-  followedLength,
+  followedChannels,
+  ...props
 }) => {
   return (
     <div>
       {children}
-      <ul>
+      <ul
+        className={classnames(
+          createClasses(
+            { followedChannels } as { [key: string]: boolean },
+            'channels-list--'
+          )
+        )}
+      >
         {channels.map((channel) => (
-          <li key={nanoid()}>
-            <ChannelItem
-              channel={channel}
-              followChannel={followChannel}
-              followedLength={followedLength}
-            />
+          <li key={nanoid()} className="channels-list__item">
+            <ChannelItem channel={channel} {...props} />
           </li>
         ))}
       </ul>

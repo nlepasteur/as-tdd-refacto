@@ -13,7 +13,10 @@ import { FiCheck } from 'react-icons/fi';
 import { HiOutlinePlus } from 'react-icons/hi';
 import { IoCloseOutline } from 'react-icons/io5';
 
-export type InjectedProps = Pick<PropsFromChannelsList, 'followChannel'> & {
+export type InjectedProps = Pick<
+  PropsFromChannelsList,
+  'followChannel' | 'isLogged'
+> & {
   channel: Channel;
   followedLength: number;
 };
@@ -43,6 +46,7 @@ const ChannelItem = ({
   channel,
   followChannel,
   followedLength,
+  isLogged,
 }: InjectedProps) => {
   const [{ status }, dispatch] = useReducer(reducer, initialState);
   const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -71,24 +75,26 @@ const ChannelItem = ({
             <BiGridVertical />
           </div>
           <div className="channel-overlay__name">{channel.name}</div>
-          <button
-            className={classnames(
-              'channel-overlay__follow',
-              status === 'fetching' && 'channel-overlay__follow--fetching'
-            )}
-            onClick={handleClick}
-          >
-            <div className="follow-status follow-status__followed">
-              <FiCheck />
-            </div>
-            <div className="follow-status follow-status__unfollow">
-              <IoCloseOutline />
-            </div>
-            <div className="follow-status follow-status__follow">
-              <HiOutlinePlus />
-            </div>
-            <div className="follow-status follow-status__fetching">F!</div>
-          </button>
+          {isLogged ? (
+            <button
+              className={classnames(
+                'channel-overlay__follow',
+                status === 'fetching' && 'channel-overlay__follow--fetching'
+              )}
+              onClick={handleClick}
+            >
+              <div className="follow-status follow-status__followed">
+                <FiCheck />
+              </div>
+              <div className="follow-status follow-status__unfollow">
+                <IoCloseOutline />
+              </div>
+              <div className="follow-status follow-status__follow">
+                <HiOutlinePlus />
+              </div>
+              <div className="follow-status follow-status__fetching">F!</div>
+            </button>
+          ) : null}
         </div>
       </div>
     </Link>

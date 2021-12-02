@@ -9,21 +9,19 @@ import Artwork from 'views/Artwork';
 // style
 import './App.css';
 // newly
-import ChannelsDropDownNav from 'views/Mosaic/MosaicFiltersBar/ChannelsNav/ChannelsDropDownNav';
 
 const App = () => {
   const { pathname } = useLocation();
   const mosaicPath = /artwork/.test(pathname) ? '/artwork/:id' : '/';
+
   return (
     <Provider store={store}>
-      {/* <Routes>
+      <Routes>
         <Route path={mosaicPath} element={<Mosaic />} />
       </Routes>
       <Routes>
         <Route path="/artwork/:id" element={<Artwork />} />
-      </Routes> */}
-      {/* <JustATest /> */}
-      <ChannelsDropDownNav />
+      </Routes>
     </Provider>
   );
 };

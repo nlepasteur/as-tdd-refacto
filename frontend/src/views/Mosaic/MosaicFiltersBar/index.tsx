@@ -9,6 +9,7 @@ import ExplorePicker from './ExplorePicker';
 import DimensionPicker from './DimensionPicker';
 import GridSizeAdjustment from './GridSizeAdjustment';
 import MediasMediumsDropDownPicker from './MediasMediumsDropDownPicker';
+import ChannelsDropDownNav from './ChannelsNav/ChannelsDropDownNav';
 // style
 import './MosaicFiltersBar.css';
 
@@ -60,7 +61,7 @@ const MosaicFiltersBar = () => (
   <MosaicFiltersBarGrid>
     {{
       channelsCarouselNav: <div>channels carousel nav</div>,
-      channelsDropDownNav: <div>channels drop down nav</div>,
+      channelsDropDownNav: <ChannelsDropDownNav />,
       explorePicker: <ExplorePicker />,
       dimensionPicker: <DimensionPicker mosaicFiltersBar />,
       gridSizeAdjustment: <GridSizeAdjustment />,

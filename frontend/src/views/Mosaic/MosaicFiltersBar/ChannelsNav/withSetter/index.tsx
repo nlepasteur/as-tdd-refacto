@@ -9,7 +9,7 @@ const followChannel =
   async (body: { channel_id: string; position?: number }) => {
     try {
       dispatch({ type: 'FETCHING' });
-      await fetch(`/${body.position === null ? 'remove' : 'add'}`, {
+      await fetch(`/${body.position === undefined ? 'remove' : 'add'}`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',

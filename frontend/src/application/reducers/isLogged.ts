@@ -1,6 +1,6 @@
 import type { IsLoggedAction } from '../actions/isLogged';
 
-const reducer = (state = false, action: IsLoggedAction) => {
+const reducer = (state = true, action: IsLoggedAction) => {
   switch (action.type) {
     case 'IS_LOGGED':
       return true;
