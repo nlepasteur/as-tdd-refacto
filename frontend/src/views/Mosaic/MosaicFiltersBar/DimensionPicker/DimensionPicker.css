@@ -1,0 +1,42 @@
+.dimension-list {
+  display: none;
+  justify-content: center;
+  gap: 1em;
+  flex-grow: 1;
+  grid-area: dimensionpicker;
+}
+
+.dimension-list__item button {
+  border-radius: 2px;
+  padding: 2px 12px 3px;
+  color: #bbb;
+}
+
+.dimension-list__item button:hover {
+  color: #fff;
+}
+
+.dimension-list__item--active button {
+  background: rgba(19, 175, 240, 0.3);
+}
+
+.dimension-list__item button {
+  transition: color 0.2s linear;
+}
+
+.dimension-list__item--active button {
+  text-shadow: rgba(0, 0, 0, 0.35) 0px 1px 1px;
+  color: #fff;
+}
+
+@media (min-width: 976px) {
+  .dimension-list--mosaic-filters-bar {
+    display: flex;
+  }
+}
+
+@media (max-width: 975px) {
+  .dimension-list--medias-mediums-drop-down-picker {
+    display: flex;
+  }
+}
