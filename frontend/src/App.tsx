@@ -1,9 +1,7 @@
 // libs
-import { Provider } from 'react-redux';
 import { Routes, Route, useLocation } from 'react-router-dom';
-// store
-import store from 'application/store';
 // components
+import PopUpErrors from 'components/PopUpErrors';
 import Mosaic from 'views/Mosaic';
 import Artwork from 'views/Artwork';
 // style
@@ -15,14 +13,15 @@ const App = () => {
   const mosaicPath = /artwork/.test(pathname) ? '/artwork/:id' : '/';
 
   return (
-    <Provider store={store}>
+    <>
+      <PopUpErrors />
       <Routes>
         <Route path={mosaicPath} element={<Mosaic />} />
       </Routes>
       <Routes>
         <Route path="/artwork/:id" element={<Artwork />} />
       </Routes>
-    </Provider>
+    </>
   );
 };
 

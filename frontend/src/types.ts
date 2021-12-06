@@ -104,3 +104,25 @@ export type PartialFetchStateAction =
   | { type: 'FETCHING' }
   | { type: 'FAILURE'; payload: string }
   | { type: 'SUCCESS' };
+
+export type PartialUser = {
+  medium_avatar_url: string;
+  is_school_account: boolean;
+  is_studio_account: boolean;
+  is_plus_member: boolean;
+  is_staff: boolean;
+  pro_member: boolean;
+  full_name: string;
+  username: string;
+  id: string;
+};
+
+export type CompleteUser = PartialUser & {
+  blocked: boolean;
+  followed: boolean;
+  following_back: boolean;
+  headline: string;
+  large_avatar_url: string;
+  permalink: string;
+  small_cover_url: string;
+};

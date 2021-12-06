@@ -1,5 +1,6 @@
 :root {
   --white-text: 255, 255, 255;
+  --red-error: 217, 83, 79;
   --blue: 19, 175, 240;
   --grey-bg-34: 34, 34, 34;
   --grey-bg-51: 51, 51, 51;
@@ -30,3 +31,18 @@ button {
   background: none;
   cursor: pointer;
 }
+
+/* 
+@keyframes slidein {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.pop-up-error-msg {
+  animation: 1s linear 1s slidein;
+}
+*/
