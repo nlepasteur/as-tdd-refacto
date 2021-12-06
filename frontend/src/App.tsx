@@ -7,6 +7,7 @@ import Artwork from 'views/Artwork';
 // style
 import './App.css';
 // newly
+import Comments from 'views/Artwork/Comments';
 
 const App = () => {
   const { pathname } = useLocation();
@@ -14,13 +15,14 @@ const App = () => {
 
   return (
     <>
-      <PopUpErrors />
+      <Comments />
+      {/* <PopUpErrors />
       <Routes>
         <Route path={mosaicPath} element={<Mosaic />} />
       </Routes>
       <Routes>
         <Route path="/artwork/:id" element={<Artwork />} />
-      </Routes>
+      </Routes> */}
     </>
   );
 };
