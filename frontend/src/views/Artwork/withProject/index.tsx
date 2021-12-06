@@ -1,6 +1,6 @@
 // types
 import type { ComponentType } from 'react';
-import type { FetchState } from '@types';
+import type { FetchState, PartialUser, CompleteUser } from '@types';
 import type { RootState } from 'application/types';
 // libs
 import { connect } from 'react-redux';
@@ -26,17 +26,7 @@ type PartialArtworkData = {
   //   };
   //   url: string;
   title: string;
-  user: {
-    medium_avatar_url: string;
-    is_school_account: boolean;
-    is_studio_account: boolean;
-    is_plus_member: boolean;
-    is_staff: boolean;
-    pro_member: boolean;
-    full_name: string;
-    username: string;
-    id: string;
-  };
+  user: PartialUser;
   //   smaller_square_cover_url: string;
   hide_as_adult: boolean;
   id: string;
@@ -90,25 +80,7 @@ type CompleteArtworkData = {
   visible: boolean;
   visible_on_artstation: boolean;
   // idem
-  user: {
-    medium_avatar_url: string;
-    is_plus_member: boolean;
-    is_school_account: boolean;
-    is_studio_account: boolean;
-    is_staff: boolean;
-    pro_member: true;
-    full_name: string;
-    username: string;
-    id: string;
-    // idem
-    blocked: boolean;
-    followed: boolean;
-    following_back: boolean;
-    headline: string;
-    large_avatar_url: string;
-    permalink: string;
-    small_cover_url: string;
-  };
+  user: CompleteUser;
 };
 
 type ArtworkData = PartialArtworkData | CompleteArtworkData | null;

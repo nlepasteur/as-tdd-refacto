@@ -1,0 +1,23 @@
+.pop-up-errors-list {
+  position: fixed;
+  z-index: 10000;
+}
+
+.pop-up-errors-list button {
+  color: rgb(var(--grey-bg-187));
+  width: 350px;
+  max-width: 100%;
+  margin: 0 0 10px;
+  background-color: rgb(var(--grey-bg-51));
+  padding: 15px 35px 15px 25px;
+  box-shadow: 0 14px 30px 6px rgb(0 0 0 / 63%);
+  border-radius: 2px;
+  border: 1px solid transparent;
+  border-left: 4px solid rgb(var(--red-error));
+  transition: border-color 0.2s linear;
+}
+
+.pop-up-errors-list button:hover {
+  border-color: rgb(var(--grey-bg-187));
+  border-left-color: rgb(var(--red-error));
+}

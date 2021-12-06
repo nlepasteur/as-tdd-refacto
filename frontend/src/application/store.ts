@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 // reducers
 import isLogged from './reducers/isLogged';
+import popUpErrors from './reducers/popUpErrors';
 import explore from './reducers/explore';
 import dimension from './reducers/dimension';
 import grid from './reducers/grid';
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   projectsState,
   shuffledProjects,
   page,
+  popUpErrors,
 });
 
 const persistedState = loadState([
