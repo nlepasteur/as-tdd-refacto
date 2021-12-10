@@ -126,3 +126,12 @@ export type CompleteUser = PartialUser & {
   permalink: string;
   small_cover_url: string;
 };
+
+export type Like = {
+  created_at: string;
+  id: string;
+  user: CompleteUser;
+  user_id: string;
+  votable_id: string;
+  votable_type: 'comment' | 'project';
+};

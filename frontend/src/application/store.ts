@@ -13,9 +13,11 @@ import mediums from './reducers/mediums';
 import projectsState from './reducers/projects';
 import shuffledProjects from './reducers/shuffledProjects';
 import page from './reducers/page';
+import showSignupSigninModal from 'application/reducers/showSignupSigninModal';
 
 const rootReducer = combineReducers({
   isLogged,
+  showSignupSigninModal,
   explore,
   dimension,
   grid,

@@ -4,7 +4,7 @@ import type { ReactElement } from 'react';
 const StopScrollOnArtworkPageOverlayAntagonist = ({
   children,
 }: {
-  children: ReactElement[];
+  children: ReactElement;
 }) => (
   <div
     style={{
