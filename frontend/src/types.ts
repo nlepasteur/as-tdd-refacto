@@ -125,13 +125,98 @@ export type CompleteUser = PartialUser & {
   large_avatar_url: string;
   permalink: string;
   small_cover_url: string;
+  followers_count: number;
+  projects_count: number;
 };
 
-export type Like = {
+export type Comment = {
+  commentable_id: string;
   created_at: string;
+  hidden_by_user: boolean;
   id: string;
+  liked: boolean;
+  likes_count: number;
+  parent_id: null | string;
+  text: string;
+  text_as_html: string;
   user: CompleteUser;
   user_id: string;
+  child_comments: Comment[];
+};
+
+export type Vote = {
+  created_at: string;
+  id: string;
+  user_id: string;
   votable_id: string;
-  votable_type: 'comment' | 'project';
+  votable_type: string;
+  user: CompleteUser;
+};
+
+export type PartialProject = {
+  title: string;
+  user: PartialUser;
+  hide_as_adult: boolean;
+  id: string;
+};
+
+export type CompleteProject = {
+  title: string;
+  hide_as_adult: boolean;
+  admin_adult_content: boolean;
+  adult_content: boolean;
+  assets: {
+    asset_type: string;
+    has_embedded_player: boolean;
+    has_image: boolean;
+    height: number;
+    id: string;
+    image_url: string;
+    oembed: null;
+    player_embedded: null;
+    position: number;
+    title: null;
+    title_formatted: string;
+    viewport_constraint_type: 'constrained' | '';
+    width: number;
+  }[];
+  categories: { name: string; id: string }[];
+  collections: Collection[];
+  comments_count: number;
+  cover_url: string;
+  created_at: string;
+  description: string;
+  description_html: string;
+  editor_pick: boolean;
+  hash_id: string;
+  id: string;
+  liked: boolean;
+  likes_count: number;
+  mediums: { name: string; id: string }[];
+  medium: { name: string; id: string };
+  permalink: string;
+  published_at: string;
+  slug: string;
+  software_items: { name: string; id: string }[];
+  suppressed: boolean;
+  tags: string[];
+  updated_at: string;
+  user_id: string;
+  views_count: number;
+  visible: boolean;
+  visible_on_artstation: boolean;
+  user: CompleteUser;
+};
+
+export type Project = PartialProject | CompleteProject | null;
+
+export type Collection = {
+  active_projects_count: number;
+  id: string;
+  is_private: boolean;
+  micro_square_image_url: string;
+  name: string;
+  projects_count: number;
+  small_square_image_url: string;
+  user_id: string;
 };

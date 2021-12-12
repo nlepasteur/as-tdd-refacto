@@ -1,141 +1,213 @@
 // types
 import type { ComponentType } from 'react';
-import type { FetchState, PartialUser, CompleteUser } from '@types';
-import type { RootState } from 'application/types';
+import type { ConnectedProps } from 'react-redux';
+import type {
+  FetchState,
+  GenericFetchFetching,
+  GenericFetchFailure,
+  PartialProject,
+  CompleteProject,
+  Project,
+  Collection,
+} from '@types';
+import type { RootState, AppDispatch, PopUpError } from 'application/types';
 // libs
 import { connect } from 'react-redux';
 import { useReducer, useEffect, useCallback } from 'react';
 import { useLocation, useParams } from 'react-router';
+// action creators
+import { toggleSignupSigninModal } from 'application/actions/showSignupSigninModal';
+import { addPopUpError } from 'application/actions/popUpErrors';
+// context
+import ProjectContextProvider, {
+  ProjectContext,
+} from '../ProjectContextProvider';
 
 const mapState = ({ isLogged }: RootState) => ({
   isLogged,
 });
 
-export const connector = connect(mapState);
+const mapDispatch = (dispatch: AppDispatch) => ({
+  toggleSignupSigninModal: () => dispatch(toggleSignupSigninModal()),
+  addPopUpError: (error: PopUpError) => dispatch(addPopUpError(error)),
+});
 
-type PropsFromRedux = ReturnType<typeof mapState>;
+export const connector = connect(mapState, mapDispatch);
 
-type PartialArtworkData = {
-  //   icons: {
-  //     image: boolean;
-  //     video: boolean;
-  //     video_clip: boolean;
-  //     model_3d: boolean;
-  //     marmoset: boolean;
-  //     pano: boolean;
-  //   };
-  //   url: string;
-  title: string;
-  user: PartialUser;
-  //   smaller_square_cover_url: string;
-  hide_as_adult: boolean;
-  id: string;
+export type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type ProjectFetchState = Omit<FetchState<Project>, 'data'> & { data: Project };
+
+type OwnProps = object; // doit venir de props follow (puisque follow function utilisée partout dans app)
+
+export type InjectedProps = ProjectFetchState & PropsFromRedux & OwnProps;
+
+const addCollection = (
+  state: Omit<FetchState<Project>, 'data'> & { data: CompleteProject },
+  collection: Collection
+) => {
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      collections: [...state.data.collections, collection], // on considère que ne peut être null puisque si addCollection call signifie que user est logged
+    },
+  };
 };
 
-type CompleteArtworkData = {
-  // idem
-  title: string;
-  hide_as_adult: boolean;
-  // idem
-  admin_adult_content: boolean;
-  adult_content: boolean;
-  assets: {
-    asset_type: string;
-    has_embedded_player: boolean;
-    has_image: boolean;
-    height: number;
-    id: string;
-    image_url: string;
-    oembed: null;
-    player_embedded: null;
-    position: number;
-    title: null;
-    title_formatted: string;
-    viewport_constraint_type: 'constrained' | '';
-    width: number;
-  }[];
-  categories: { name: string; id: string }[];
-  collections: { name: string; id: string }[];
-  comments_count: number;
-  cover_url: string;
-  created_at: string;
-  description: string;
-  description_html: string;
-  editor_pick: boolean;
-  hash_id: string;
-  id: string;
-  liked: boolean;
-  likes_count: number;
-  mediums: { name: string; id: string }[];
-  medium: { name: string; id: string };
-  permalink: string;
-  published_at: string;
-  slug: string;
-  software_items: { name: string; id: string }[];
-  suppressed: boolean;
-  tags: string[];
-  updated_at: string;
-  user_id: string;
-  views_count: number;
-  visible: boolean;
-  visible_on_artstation: boolean;
-  // idem
-  user: CompleteUser;
-};
-
-type ArtworkData = PartialArtworkData | CompleteArtworkData | null;
-
-type ArtworkDataFetchState = Omit<FetchState<ArtworkData>, 'data'> & {
-  data: ArtworkData;
-};
-
-export type InjectedProps = ArtworkDataFetchState &
-  PropsFromRedux & { fetchArtworkData: (artworkId: string) => Promise<void> };
-
-const withArtworkData = (UnwrappedComponent: ComponentType<InjectedProps>) => {
-  const WithArtworkData = (props: PropsFromRedux) => {
+const withProject = (UnwrappedComponent: ComponentType<InjectedProps>) => {
+  const WithProject = (props: PropsFromRedux) => {
     const { id } = useParams();
-    const { state } = useLocation();
-    const initialState = state ? state : null;
+    const { state } = useLocation() as { state: PartialProject };
+
+    const initialState = state
+      ? ({
+          status: 'init',
+          error: null,
+          data: state,
+        } as ProjectFetchState)
+      : ({
+          status: 'init',
+          error: null,
+          data: null,
+        } as ProjectFetchState);
+
     const reducer = (
-      state = initialState,
-      action: { type: 'SUCCESS'; payload: CompleteArtworkData }
-    ): ArtworkDataFetchState => {
+      state: ProjectFetchState = initialState,
+      action:
+        | GenericFetchFailure
+        | GenericFetchFetching
+        | { type: 'SUCCESS'; payload: Project }
+        | { type: 'ADD_COLLECTION'; payload: Collection }
+    ): ProjectFetchState => {
       switch (action.type) {
+        case 'FETCHING':
+          return { error: null, status: 'fetching', data: null };
+        case 'FAILURE':
+          return {
+            status: 'failure',
+            error: action.payload,
+            data: null,
+          };
         case 'SUCCESS':
           return { error: null, status: 'success', data: action.payload };
+        case 'ADD_COLLECTION':
+          return addCollection(
+            state as Omit<FetchState<Project>, 'data'> & {
+              data: CompleteProject;
+            },
+            action.payload
+          );
         default:
           return state;
       }
     };
-    const [artworkDataFetchState, dispatch] = useReducer(reducer, initialState);
 
-    const fetchArtworkData = useCallback(async (artworkId: string) => {
-      try {
-        const response = await fetch(`/projects/${artworkId}`);
-        const data = await response.json();
-        dispatch({
-          type: 'SUCCESS',
-          payload: data,
-        });
-      } catch (e) {
-        // handle error
-      }
-    }, []);
+    const [ProjectFetchState, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
-      fetchArtworkData(id as string);
-    }, [id, fetchArtworkData]);
+      (async function () {
+        try {
+          dispatch({ type: 'FETCHING' });
+          // const response = await fetch('/projects');
+          // const project = (await response.json()) as CompleteProject;
+          // dispatch({ type: 'SUCCESS', payload: project });
+          dispatch({ type: 'SUCCESS', payload: makeStubProject() });
+        } catch (e) {
+          // handle error
+        }
+      })();
+    }, [id]);
 
     return (
-      <UnwrappedComponent
-        {...props}
-        fetchArtworkData={fetchArtworkData}
-        {...artworkDataFetchState}
-      />
+      <ProjectContextProvider>
+        <UnwrappedComponent {...props} {...ProjectFetchState} />
+      </ProjectContextProvider>
     );
   };
-  return WithArtworkData;
+  return WithProject;
 };
 
-export default withArtworkData;
+export default withProject;
+
+function makeStubProject(): CompleteProject {
+  return {
+    title: 'stub project',
+    hide_as_adult: false,
+    admin_adult_content: false,
+    adult_content: false,
+    assets: [
+      {
+        asset_type: 'image',
+        has_embedded_player: false,
+        has_image: false,
+        height: 1000,
+        id: 'stubId',
+        image_url: '',
+        oembed: null,
+        player_embedded: null,
+        position: 1,
+        title: null,
+        title_formatted: 'stub project',
+        viewport_constraint_type: 'constrained',
+        width: 1000,
+      },
+    ],
+    categories: [{ name: 'stub categorie', id: 'stubCategorieId' }],
+    collections: [
+      {
+        active_projects_count: 1,
+        id: 'stubCollectionId',
+        is_private: false,
+        micro_square_image_url: '',
+        name: 'stub collection name',
+        projects_count: 1,
+        small_square_image_url: '',
+        user_id: 'stubUserId',
+      },
+    ],
+    comments_count: 0,
+    cover_url: '',
+    created_at: '',
+    description: '',
+    description_html: '',
+    editor_pick: false,
+    hash_id: '',
+    id: 'stubProjectId',
+    liked: false,
+    likes_count: 0,
+    mediums: [],
+    medium: { name: '', id: '' },
+    permalink: '',
+    published_at: '',
+    slug: '',
+    software_items: [],
+    suppressed: false,
+    tags: [],
+    updated_at: '',
+    user_id: '',
+    views_count: 0,
+    visible: false,
+    visible_on_artstation: false,
+    user: {
+      followers_count: 0,
+      projects_count: 0,
+      full_name: '',
+      username: '',
+      medium_avatar_url: '',
+      small_cover_url: '',
+      is_plus_member: false,
+      is_school_account: false,
+      is_staff: false,
+      is_studio_account: false,
+      pro_member: false,
+      id: 'stubUserId',
+      blocked: false,
+      followed: false,
+      following_back: false,
+      headline: '',
+      large_avatar_url: '',
+      permalink: '',
+    },
+  };
+}

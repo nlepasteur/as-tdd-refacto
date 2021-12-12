@@ -17,7 +17,7 @@ export const toggleLikesModal = () =>
 
 type ToggleLikesModalAction = ReturnType<typeof toggleLikesModal>;
 
-type ArtworkContextAction = ToggleLikesModalAction;
+export type ArtworkContextAction = ToggleLikesModalAction;
 
 const reducer = (state = initialState, action: ArtworkContextAction): State => {
   switch (action.type) {
@@ -28,21 +28,21 @@ const reducer = (state = initialState, action: ArtworkContextAction): State => {
   }
 };
 
-interface ArtworkContext extends State {
+interface ProjectContext extends State {
   dispatch: Dispatch<ArtworkContextAction>;
 }
 
-export const ArtworkContext = createContext<ArtworkContext>(
-  null as unknown as ArtworkContext
+export const ProjectContext = createContext<ProjectContext>(
+  {} as unknown as ProjectContext
 );
 
-const ArtworkContextProvider = ({ children }: { children: ReactNode }) => {
+const ProjectContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
-    <ArtworkContext.Provider value={{ ...state, dispatch }}>
+    <ProjectContext.Provider value={{ ...state, dispatch }}>
       {children}
-    </ArtworkContext.Provider>
+    </ProjectContext.Provider>
   );
 };
 
-export default ArtworkContextProvider;
+export default ProjectContextProvider;

@@ -6,4 +6,6 @@ export type { GridSize } from './reducers/grid';
 export type { Media } from './reducers/medias';
 export type { Medium } from './reducers/mediums';
 export type { GetMediums } from './actions/mediums';
+// ci-dessous correspond en fait à PartialProject
 export type { Project } from './reducers/projects';
+export type { PopUpError } from './reducers/popUpErrors';

@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <>
-      <button
+      {/* <button
         onClick={() => dispatch(toggleSignupSigninModal())}
         style={{
           color: 'white',
@@ -31,15 +31,14 @@ const App = () => {
       >
         toggle signup signin modal
       </button>
-      {showSignupSigninModal ? <SignupSigninModal /> : null}
-      {/* <Comments /> */}
-      {/* <PopUpErrors />
+      {showSignupSigninModal ? <SignupSigninModal /> : null} */}
+      {/* <PopUpErrors /> */}
       <Routes>
         <Route path={mosaicPath} element={<Mosaic />} />
       </Routes>
       <Routes>
         <Route path="/artwork/:id" element={<Artwork />} />
-      </Routes> */}
+      </Routes>
     </>
   );
 };
