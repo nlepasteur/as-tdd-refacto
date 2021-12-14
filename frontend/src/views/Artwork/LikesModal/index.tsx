@@ -2,63 +2,107 @@
 import type { ComponentType } from 'react';
 import type { InjectedProps as PropsFromWithLikes } from './withLikes';
 // libs
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect, createRef } from 'react';
 import gsap from 'gsap';
 // hooks
 import useOnClickOutside from 'hooks/useOnClickOutside';
 // components
+import Modal from 'components/Modal';
 import withLikes from './withLikes';
 import Like from './Like';
+import { CgClose } from 'react-icons/cg';
+// style
+import './LikesModal.css';
 
 type InjectedProps = PropsFromWithLikes;
 
-const Likes: ComponentType<InjectedProps> = ({ likes, toggleLikesModal }) => {
-  const modal = useRef(null);
-  const timeline = useRef<gsap.core.Timeline | null>(null);
-  const handleCloseLikesModal = () => {
-    if (timeline.current) {
+// const LikesModal: ComponentType<InjectedProps> = ({
+//   likes,
+//   toggleLikesModal,
+// }) => {
+//   const modal = useRef(null);
+//   const timeline = useRef<gsap.core.Timeline | null>(null);
+//   const handleCloseLikesModal = () => {
+//     if (timeline.current) {
+//       timeline.current.reverse().then(() => toggleLikesModal());
+//     }
+//   };
+
+//   useOnClickOutside(modal, handleCloseLikesModal);
+//   useLayoutEffect(() => {
+//     timeline.current = gsap
+//       .timeline()
+//       .set(modal.current, { y: '-100%', opacity: 0 })
+//       .to(modal.current, {
+//         y: '0',
+//         top: '5vh',
+//         duration: 0.5,
+//         opacity: 1,
+//       });
+//   }, []);
+
+//   return (
+//     <div className="modal-background">
+//       <div ref={modal} className="modal">
+//         <div className="modal__header">
+//           <div>People Who Like This</div>
+//           <button onClick={handleCloseLikesModal}>
+//             <CgClose />
+//           </button>
+//         </div>
+//         <ul className="modal__list">
+//           {likes.map((like) => (
+//             <li key={like.id} className="like">
+//               <Like like={like} handleCloseLikesModal={handleCloseLikesModal} />
+//             </li>
+//           ))}
+//         </ul>
+//       </div>
+//     </div>
+//   );
+// };
+
+const LikesModal: ComponentType<InjectedProps> = ({
+  likes,
+  toggleLikesModal,
+}) => {
+  const timeline = createRef<gsap.core.Timeline | null>();
+  const handleCloseModal = () => {
+    if (
+      timeline instanceof Object &&
+      'current' in timeline &&
+      timeline.current
+    ) {
       timeline.current.reverse().then(() => toggleLikesModal());
     }
   };
-
-  useOnClickOutside(modal, handleCloseLikesModal);
-  useLayoutEffect(() => {
-    timeline.current = gsap
-      .timeline()
-      .set(modal.current, { y: '-100%', opacity: 0 })
-      .to(modal.current, { y: '-50%', top: '50%', duration: 0.5, opacity: 1 });
-  }, []);
-
   return (
-    <div
-      style={{
-        backgroundColor: 'rgba(0,0,0,.5)',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-      }}
+    <Modal
+      handleCloseModal={handleCloseModal}
+      header="People Who Like This"
+      ref={timeline}
     >
-      <ul
-        ref={modal}
-        style={{
-          position: 'absolute',
-          backgroundColor: '#171717',
-          width: '300px',
-          height: '150px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-        }}
-      >
-        {likes.map((like) => (
-          <li key={like.id} style={{ color: 'white' }}>
-            <Like like={like} handleCloseLikesModal={handleCloseLikesModal} />
-          </li>
-        ))}
-      </ul>
-    </div>
+      {{
+        main: (
+          <>
+            {/* <div className="modal__header">
+              <div>People Who Like This</div>
+              <button onClick={toggleLikesModal}>
+                <CgClose />
+              </button>
+            </div> */}
+            <ul className="modal__list">
+              {likes.map((like) => (
+                <li key={like.id} className="like">
+                  <Like like={like} handleCloseLikesModal={toggleLikesModal} />
+                </li>
+              ))}
+            </ul>
+          </>
+        ),
+      }}
+    </Modal>
   );
 };
 
-export default withLikes(Likes);
+export default withLikes(LikesModal);

@@ -14,6 +14,7 @@ import './App.css';
 // newly
 import { toggleSignupSigninModal } from 'application/actions/showSignupSigninModal';
 import Comments from 'views/Artwork/Comments';
+import AddToCollectionModal from 'views/Artwork/AddToCollectionModal';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -32,6 +33,7 @@ const App = () => {
         toggle signup signin modal
       </button>
       {showSignupSigninModal ? <SignupSigninModal /> : null} */}
+
       {/* <PopUpErrors /> */}
       <Routes>
         <Route path={mosaicPath} element={<Mosaic />} />

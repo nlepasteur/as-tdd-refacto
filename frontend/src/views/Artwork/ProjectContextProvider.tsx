@@ -5,17 +5,25 @@ import { createContext, useReducer } from 'react';
 
 const initialState = {
   showLikesModal: false,
-  votableId: null,
+  showAddToCollectionModal: false,
+  votable_id: null,
 };
 
-type State = Readonly<typeof initialState> & { votableId: null | string };
+type State = Readonly<typeof initialState> & { votable_id: null | string };
 
 export const toggleLikesModal = () =>
   ({
     type: 'TOGGLE_LIKES_MODAL',
   } as const);
 
-type ToggleLikesModalAction = ReturnType<typeof toggleLikesModal>;
+export const toggleAddToCollectionModal = () =>
+  ({
+    type: 'TOGGLE_ADD_TO_COLLECTION_MODAL',
+  } as const);
+
+type ToggleLikesModalAction =
+  | ReturnType<typeof toggleLikesModal>
+  | ReturnType<typeof toggleAddToCollectionModal>;
 
 export type ArtworkContextAction = ToggleLikesModalAction;
 
@@ -23,6 +31,11 @@ const reducer = (state = initialState, action: ArtworkContextAction): State => {
   switch (action.type) {
     case 'TOGGLE_LIKES_MODAL':
       return { ...state, showLikesModal: !state.showLikesModal };
+    case 'TOGGLE_ADD_TO_COLLECTION_MODAL':
+      return {
+        ...state,
+        showAddToCollectionModal: !state.showAddToCollectionModal,
+      };
     default:
       return state;
   }

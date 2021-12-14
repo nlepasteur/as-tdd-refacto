@@ -27,7 +27,7 @@ const addToCollection =
     }
   };
 
-const createCollectionThenAddToCollection =
+const createCollection =
   (
     failureCallback: (arg: Omit<PopUpError, 'id'>) => void,
     successCb: (arg: Collection) => void
@@ -53,14 +53,14 @@ const createCollectionThenAddToCollection =
 
 export type InjectedProps = PropsFromWithCollections & {
   addToCollection: typeof addToCollection;
-  createCollectionThenAddToCollection: typeof createCollectionThenAddToCollection;
+  createCollection: typeof createCollection;
 };
 
 const withSetters = (UnwrappedComponent: ComponentType<InjectedProps>) => {
   const WithSetters = (props: PropsFromWithCollections) => (
     <UnwrappedComponent
       addToCollection={addToCollection}
-      createCollectionThenAddToCollection={createCollectionThenAddToCollection}
+      createCollection={createCollection}
       {...props}
     />
   );

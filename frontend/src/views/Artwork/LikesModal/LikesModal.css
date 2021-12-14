@@ -1,0 +1,73 @@
+.modal__header {
+  background-color: rgb(var(--grey-bg-51));
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  padding: 10px 15px;
+  color: rgb(var(--white-text));
+  font-size: 24px;
+  font-weight: 300;
+  display: flex;
+}
+
+.modal__header > div {
+  flex-grow: 1;
+}
+
+.modal__header button {
+  font-size: 20px;
+  color: rgb(var(--grey-color-124));
+  transition: all 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
+.modal__header button:hover {
+  color: rgb(156, 153, 153);
+}
+
+.modal__list {
+  padding: 10px 15px;
+}
+
+.like {
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(var(--grey-bg-51));
+  display: flex;
+}
+
+.like:first-child {
+  padding-top: 0;
+}
+
+.like:last-child {
+  padding-bottom: 0;
+  border: 0;
+}
+
+.like__user {
+  flex-grow: 1;
+}
+
+.like__username {
+  color: rgb(var(--blue));
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-right: 0.5em;
+}
+
+.like__username:hover {
+  color: rgb(var(--blue-hover));
+}
+
+.like__projects-count,
+.like__followers-count {
+  color: rgb(var(--grey-color-124));
+  display: inline-block;
+  font-size: 0.75em;
+  margin-right: 0.5em;
+}
+
+.like__headline {
+  color: rgb(156, 153, 153);
+}

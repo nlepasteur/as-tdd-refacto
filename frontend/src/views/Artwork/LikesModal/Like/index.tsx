@@ -11,15 +11,19 @@ const Like: ComponentType<InjectedProps> = ({
   handleCloseLikesModal,
 }) => (
   <>
-    <Link to={`/${like.user.username}`}>
-      <img src={like.user.small_cover_url} alt={''} />
-    </Link>
-    <Link to={`/${like.user.username}`}>{like.user.username}</Link>
-    <div>{like.user.followers_count}</div>
-    <div>{like.user.projects_count}</div>
-    <button onClick={handleCloseLikesModal} style={{ color: 'red' }}>
-      close
-    </button>
+    <div className="like__user">
+      <Link to={`/${like.user.username}`}>
+        <img src={like.user.small_cover_url} alt={''} />
+      </Link>
+      <Link to={`/${like.user.username}`} className="like__username">
+        {like.user.username}
+      </Link>
+      <div className="like__followers-count">{like.user.followers_count}</div>
+      <div className="like__projects-count">{like.user.projects_count}</div>
+
+      <div className="like__headline">headline</div>
+    </div>
+    {/* FOLLOW A ENLEVER ET A ISOLER PUISQU'UTILISE PARTOUT DANS APP */}
     <button>follow</button>
   </>
 );

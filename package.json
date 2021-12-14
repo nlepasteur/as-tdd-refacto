@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "jest --watch --config=frontend/jest.config.ts -- addToCollection.test.tsx",
     "lint": "eslint --fix \"*/src/**/*.{js,jsx,ts,tsx,json}\"",
     "test:components": "jest --watch --config=frontend/jest.config.ts --testPathPattern=__tests__/components",
     "test:hooks": "jest --watch --config=frontend/jest.config.ts --testPathPattern=use",
@@ -23,6 +24,7 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.3.1",
+    "jest-cli": "^27.4.5",
     "prettier": "^2.4.1",
     "ts-jest": "^27.0.7",
     "ts-node": "^10.3.1",
