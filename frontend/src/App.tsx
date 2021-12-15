@@ -34,7 +34,7 @@ const App = () => {
       </button>
       {showSignupSigninModal ? <SignupSigninModal /> : null} */}
 
-      {/* <PopUpErrors /> */}
+      <PopUpErrors />
       <Routes>
         <Route path={mosaicPath} element={<Mosaic />} />
       </Routes>

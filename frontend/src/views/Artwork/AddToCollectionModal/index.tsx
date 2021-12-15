@@ -5,6 +5,8 @@ import type { InjectedProps as AddToCollectionListItemsProps } from './AddToColl
 // libs
 import { useState, createRef, useCallback } from 'react';
 // components
+import withCollections from './withCollections';
+import withSetters from './withSetters';
 import Modal from 'components/Modal';
 import Btn from 'components/Btn';
 import AddToCollectionListItems from './AddToCollectionListItems';
@@ -20,7 +22,6 @@ const AddToCollectionModal: ComponentType<InjectedProps> = ({
   toggleAddToCollectionModal,
   ...props
 }) => {
-  // const [showCollectionCreation, toggleCollectionCreation] = useState(false);
   const timeline = createRef<gsap.core.Timeline | null>();
   const handleCloseModal = useCallback(() => {
     if (
@@ -50,11 +51,7 @@ const AddToCollectionModal: ComponentType<InjectedProps> = ({
   );
 };
 
-function Main({
-  toggleAddToCollectionModal,
-  createCollection,
-  ...props
-}: InjectedProps) {
+function Main({ createCollection, ...props }: InjectedProps) {
   const [showCollectionCreation, toggleCollectionCreation] = useState(false);
   return (
     <div style={{ color: 'white' }}>
@@ -79,4 +76,5 @@ function Main({
   );
 }
 
-export default AddToCollectionModal;
+// export default AddToCollectionModal;
+export default withCollections(withSetters(AddToCollectionModal));

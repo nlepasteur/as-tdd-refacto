@@ -1,17 +1,20 @@
 // types
 import type { ComponentType } from 'react';
 import type { Collection, FetchState, GenericFetchAction } from '@types';
-import type { InjectedProps as PropsFromWithSetters } from '../../withSetters';
+// import type { InjectedProps as PropsFromWithSetters } from '../../withSetters';
+import type {
+  InjectedProps as UnwrappedComponentProps,
+  OwnProps as WithSettersProps,
+} from '../withSetters';
 // libs
 import { useEffect, useReducer } from 'react';
 
-// /!\ AJOUTER COLLECTIONS récupérées depuis fetch de Project afin d'indiquer lorsque
-// une collection possède déjà un project
-// sachant que si user n'est pas log alors sera sans doute null
-export type InjectedProps = { collections: Collection[] } & Pick<
-  PropsFromWithSetters,
-  'addPopUpError'
-> & { projectIsIn: Collection[] | null };
+type InjectedProps = Omit<
+  UnwrappedComponentProps,
+  // 'createCollection' | 'addToCollection'
+  'createCollection' | 'addToCollection'
+> &
+  WithSettersProps;
 
 const initialState = {
   status: 'init',
@@ -38,23 +41,20 @@ const reducer = (
 const withCollections = (
   UnwrappedComponentType: ComponentType<InjectedProps>
 ) => {
-  const WithCollections = (
-    props: Pick<PropsFromWithSetters, 'addPopUpError'> & {
-      projectIsIn: Collection[] | null;
-    }
-  ) => {
+  const WithCollections = (props: Omit<InjectedProps, 'collections'>) => {
     const [{ data: collections }, dispatch] = useReducer(reducer, initialState);
     useEffect(() => {
       (async function () {
         try {
-          const response = await fetch('/collections');
-          const collections = await response.json();
-          dispatch({ type: 'SUCCESS', payload: collections as Collection[] });
+          // const response = await fetch('/collections');
+          // const collections = await response.json();
+          // dispatch({ type: 'SUCCESS', payload: collections as Collection[] });
+          dispatch({ type: 'SUCCESS', payload: [makeCollection()] });
         } catch (e) {
           // handle error
         }
       })();
-    });
+    }, []);
 
     return <UnwrappedComponentType collections={collections} {...props} />;
   };
@@ -62,3 +62,16 @@ const withCollections = (
 };
 
 export default withCollections;
+
+function makeCollection(): Collection {
+  return {
+    active_projects_count: 1,
+    is_private: false,
+    micro_square_image_url: '',
+    small_square_image_url: '',
+    id: 'id',
+    name: 'collection name',
+    projects_count: 12,
+    user_id: 'userId',
+  };
+}

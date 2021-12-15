@@ -1,9 +1,11 @@
 // types
 import type { ComponentType } from 'react';
 import type { InjectedProps as PropsFromWithSetters } from './withSetters';
+import type { Collection } from '@types';
 // libs
 import { useContext } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 // action creators
 import {
   toggleLikesModal,
@@ -25,6 +27,7 @@ const Artwork: ComponentType<InjectedProps> = ({
   addPopUpError,
   toggleSignupSigninModal,
   like,
+  addCollection,
 }) => {
   const { dispatch, showLikesModal, showAddToCollectionModal } =
     useContext(ProjectContext);
@@ -53,13 +56,14 @@ const Artwork: ComponentType<InjectedProps> = ({
         {project && 'collections' in project && showAddToCollectionModal ? (
           <AddToCollectionModal
             project_id={project.id as string}
-            createCollection={createCollection}
-            addToCollection={addToCollection}
             in={[]}
-            collections={project.collections}
             toggleAddToCollectionModal={() =>
               dispatch(toggleAddToCollectionModal())
             }
+            failureCallback={(arg: { message: string }) => {
+              addPopUpError({ ...arg, id: nanoid() });
+            }}
+            successCallback={addCollection}
           />
         ) : null}
         <button

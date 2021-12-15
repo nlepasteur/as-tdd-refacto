@@ -40,7 +40,10 @@ type ProjectFetchState = Omit<FetchState<Project>, 'data'> & { data: Project };
 
 type OwnProps = object; // doit venir de props follow (puisque follow function utilisée partout dans app)
 
-export type InjectedProps = ProjectFetchState & PropsFromRedux & OwnProps;
+export type InjectedProps = ProjectFetchState &
+  PropsFromRedux & {
+    addCollection(collection: Collection): void;
+  };
 
 const addCollection = (
   state: Omit<FetchState<Project>, 'data'> & { data: CompleteProject },
@@ -54,6 +57,12 @@ const addCollection = (
     },
   };
 };
+
+type ProjectAction =
+  | GenericFetchFailure
+  | GenericFetchFetching
+  | { type: 'SUCCESS'; payload: Project }
+  | { type: 'ADD_COLLECTION'; payload: Collection };
 
 const withProject = (UnwrappedComponent: ComponentType<InjectedProps>) => {
   const WithProject = (props: PropsFromRedux) => {
@@ -74,11 +83,7 @@ const withProject = (UnwrappedComponent: ComponentType<InjectedProps>) => {
 
     const reducer = (
       state: ProjectFetchState = initialState,
-      action:
-        | GenericFetchFailure
-        | GenericFetchFetching
-        | { type: 'SUCCESS'; payload: Project }
-        | { type: 'ADD_COLLECTION'; payload: Collection }
+      action: ProjectAction
     ): ProjectFetchState => {
       switch (action.type) {
         case 'FETCHING':
@@ -121,7 +126,13 @@ const withProject = (UnwrappedComponent: ComponentType<InjectedProps>) => {
 
     return (
       <ProjectContextProvider>
-        <UnwrappedComponent {...props} {...ProjectFetchState} />
+        <UnwrappedComponent
+          {...props}
+          {...ProjectFetchState}
+          addCollection={(collection: Collection) => {
+            dispatch({ type: 'ADD_COLLECTION', payload: collection });
+          }}
+        />
       </ProjectContextProvider>
     );
   };
