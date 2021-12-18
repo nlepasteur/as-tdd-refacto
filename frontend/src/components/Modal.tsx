@@ -14,13 +14,13 @@ type ModalProps = {
     main: ReactNode;
   };
   header: string;
-  handleCloseModal(): void;
+  closeModal(): void;
 };
 
 const Modal = forwardRef<gsap.core.Timeline | null, ModalProps>(
-  ({ children: { main }, header, handleCloseModal }, timeline) => {
+  ({ children: { main }, header, closeModal }, timeline) => {
     const modal = useRef(null);
-    useOnClickOutside(modal, handleCloseModal);
+    useOnClickOutside(modal, closeModal);
     useLayoutEffect(() => {
       if (timeline instanceof Object && 'current' in timeline) {
         console.log('atteint');
@@ -69,7 +69,7 @@ const Modal = forwardRef<gsap.core.Timeline | null, ModalProps>(
               display: 'flex',
             }}
           >
-            <Btn onClick={handleCloseModal}>
+            <Btn onClick={closeModal}>
               {{ text: header, sibling: <CgClose /> }}
             </Btn>
           </div>

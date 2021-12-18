@@ -144,15 +144,6 @@ export type Comment = {
   child_comments: Comment[];
 };
 
-export type Vote = {
-  created_at: string;
-  id: string;
-  user_id: string;
-  votable_id: string;
-  votable_type: string;
-  user: CompleteUser;
-};
-
 export type PartialProject = {
   title: string;
   user: PartialUser;
@@ -219,4 +210,36 @@ export type Collection = {
   projects_count: number;
   small_square_image_url: string;
   user_id: string;
+};
+
+export type Following = {
+  created_at: string;
+  followee_id: string;
+  follower_id: string;
+  id: string;
+  updated_at: string;
+};
+
+export type Vote = {
+  created_at: string;
+  id: string;
+  user_id: string;
+  votable_id: string;
+  votable_type: string;
+  user: CompleteUser;
+};
+
+export type Like = Vote & {
+  user: {
+    followed: boolean;
+    followers_count: number;
+    full_name: string;
+    headline: string;
+    id: string;
+    medium_avatar_url: string;
+    plus_member: boolean;
+    pro_member: boolean;
+    projects_count: number;
+    username: string;
+  };
 };

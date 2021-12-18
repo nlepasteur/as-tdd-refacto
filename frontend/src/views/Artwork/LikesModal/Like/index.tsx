@@ -1,15 +1,17 @@
 // types
 import type { ComponentType } from 'react';
-import type { Vote } from '@types';
+import type { Like as LikeType, Following } from '@types';
 // libs
 import { Link } from 'react-router-dom';
+// components
+import FollowButton from 'components/FollowButton';
 
-type InjectedProps = { like: Vote; handleCloseLikesModal(): void };
+export type InjectedProps = {
+  like: LikeType;
+  successCallback(following: Following): void;
+};
 
-const Like: ComponentType<InjectedProps> = ({
-  like,
-  handleCloseLikesModal,
-}) => (
+const Like: ComponentType<InjectedProps> = ({ like, successCallback }) => (
   <>
     <div className="like__user">
       <Link to={`/${like.user.username}`}>
@@ -23,8 +25,10 @@ const Like: ComponentType<InjectedProps> = ({
 
       <div className="like__headline">headline</div>
     </div>
-    {/* FOLLOW A ENLEVER ET A ISOLER PUISQU'UTILISE PARTOUT DANS APP */}
-    <button>follow</button>
+    <FollowButton
+      user={{ id: like.user.id, followed: like.user.followed }}
+      successCallback={successCallback}
+    />
   </>
 );
 

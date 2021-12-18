@@ -22,7 +22,7 @@ const CreateCollection: ComponentType<InjectedProps> = ({
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <button onClick={() => cancel()}>Cancel</button>
+      <button onClick={cancel}>Cancel</button>
       <button onClick={() => createCollection({ project_id, name })}>
         Create
       </button>

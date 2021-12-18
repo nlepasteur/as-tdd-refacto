@@ -13,7 +13,7 @@ import AddToCollectionListItems from './AddToCollectionListItems';
 import CreateCollection from './CreateCollection';
 
 export type InjectedProps = Omit<CreateCollectionProps, 'cancel'> &
-  AddToCollectionListItemsProps & {
+  Omit<AddToCollectionListItemsProps, 'handleClickCreateNewCollection'> & {
     toggleAddToCollectionModal(): void;
   };
 
@@ -23,7 +23,7 @@ const AddToCollectionModal: ComponentType<InjectedProps> = ({
   ...props
 }) => {
   const timeline = createRef<gsap.core.Timeline | null>();
-  const handleCloseModal = useCallback(() => {
+  const closeModal = useCallback(() => {
     if (
       timeline instanceof Object &&
       'current' in timeline &&
@@ -34,7 +34,7 @@ const AddToCollectionModal: ComponentType<InjectedProps> = ({
   }, [timeline, toggleAddToCollectionModal]);
   return (
     <Modal
-      handleCloseModal={handleCloseModal}
+      closeModal={closeModal}
       header="Add project to collection"
       ref={timeline}
     >
@@ -53,18 +53,16 @@ const AddToCollectionModal: ComponentType<InjectedProps> = ({
 
 function Main({ createCollection, ...props }: InjectedProps) {
   const [showCollectionCreation, toggleCollectionCreation] = useState(false);
+  console.log('showCollectionCreation: :', showCollectionCreation);
   return (
     <div style={{ color: 'white' }}>
-      <Btn
-        onClick={() => toggleCollectionCreation(!showCollectionCreation)}
-        style={{ color: 'white' }}
-      >
-        {{
-          text: 'Create New Collection',
-        }}
-      </Btn>
       {!showCollectionCreation ? (
-        <AddToCollectionListItems {...props} />
+        <AddToCollectionListItems
+          {...props}
+          handleClickCreateNewCollection={() =>
+            toggleCollectionCreation(!showCollectionCreation)
+          }
+        />
       ) : (
         <CreateCollection
           cancel={() => toggleCollectionCreation(!showCollectionCreation)}

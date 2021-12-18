@@ -15,6 +15,8 @@ import './App.css';
 import { toggleSignupSigninModal } from 'application/actions/showSignupSigninModal';
 import Comments from 'views/Artwork/Comments';
 import AddToCollectionModal from 'views/Artwork/AddToCollectionModal';
+import FollowButton from 'components/FollowButton';
+import type { Following } from '@types';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -32,15 +34,19 @@ const App = () => {
       >
         toggle signup signin modal
       </button>
-      {showSignupSigninModal ? <SignupSigninModal /> : null} */}
-
-      <PopUpErrors />
+      */}
+      {showSignupSigninModal ? <SignupSigninModal /> : null}
+      <FollowButton
+        user={{ id: 'id', followed: false }}
+        invertFollowed={(following: Following) => console.log(following)}
+      />
+      {/* <PopUpErrors />
       <Routes>
         <Route path={mosaicPath} element={<Mosaic />} />
       </Routes>
       <Routes>
         <Route path="/artwork/:id" element={<Artwork />} />
-      </Routes>
+      </Routes> */}
     </>
   );
 };

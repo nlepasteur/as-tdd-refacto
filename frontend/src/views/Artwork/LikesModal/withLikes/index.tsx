@@ -1,28 +1,22 @@
 // types
-import type { ComponentType, Dispatch } from 'react';
-import type { Vote, FetchState, GenericFetchAction } from '@types';
+import type { ComponentType } from 'react';
+import type { Like, FetchState, GenericFetchAction } from '@types';
+import type { InjectedProps as LikesProps } from '../Likes';
 // libs
 import { useEffect, useReducer } from 'react';
 
-type OwnProps = {
-  votable_id: string;
-  toggleLikesModal: () => void;
-}; // ajouter fn pour close modal LikesModal
-
-type State = { likes: Vote[] };
-
-export type InjectedProps = State & Pick<OwnProps, 'toggleLikesModal'>;
+type InjectedProps = { votable_id: string };
 
 const initialState = {
   status: 'init',
   error: null,
-  data: [] as Vote[],
+  data: [] as Like[],
 } as const;
 
 const reducer = (
-  state: FetchState<Vote> = initialState,
-  action: GenericFetchAction<Vote>
-): FetchState<Vote> => {
+  state: FetchState<Like> = initialState,
+  action: GenericFetchAction<Like>
+): FetchState<Like> => {
   switch (action.type) {
     case 'FETCHING':
       return { status: 'fetching', error: null, data: [] };
@@ -35,8 +29,8 @@ const reducer = (
   }
 };
 
-const withVotes = (UnwrappedComponent: ComponentType<InjectedProps>) => {
-  const WithVotes = ({ votable_id, ...props }: OwnProps) => {
+const withLikes = (UnwrappedComponent: ComponentType<LikesProps>) => {
+  const WithLikes = ({ votable_id }: InjectedProps) => {
     const [{ data: votes }, dispatch] = useReducer(reducer, initialState);
     console.log('votes: ', votes);
     useEffect(() => {
@@ -53,10 +47,10 @@ const withVotes = (UnwrappedComponent: ComponentType<InjectedProps>) => {
     }, [votable_id]);
     return <UnwrappedComponent likes={votes} {...props} />;
   };
-  return WithVotes;
+  return WithLikes;
 };
 
-export default withVotes;
+export default withLikes;
 
 function makeStubLikes(): Vote[] {
   return [

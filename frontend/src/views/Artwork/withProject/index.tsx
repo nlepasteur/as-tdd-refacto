@@ -69,17 +69,18 @@ const withProject = (UnwrappedComponent: ComponentType<InjectedProps>) => {
     const { id } = useParams();
     const { state } = useLocation() as { state: PartialProject };
 
-    const initialState = state
-      ? ({
-          status: 'init',
-          error: null,
-          data: state,
-        } as ProjectFetchState)
-      : ({
-          status: 'init',
-          error: null,
-          data: null,
-        } as ProjectFetchState);
+    const initialState =
+      state && 'data' in state
+        ? ({
+            status: 'init',
+            error: null,
+            data: state,
+          } as ProjectFetchState)
+        : ({
+            status: 'init',
+            error: null,
+            data: null,
+          } as ProjectFetchState);
 
     const reducer = (
       state: ProjectFetchState = initialState,
@@ -108,8 +109,8 @@ const withProject = (UnwrappedComponent: ComponentType<InjectedProps>) => {
       }
     };
 
-    const [ProjectFetchState, dispatch] = useReducer(reducer, initialState);
-
+    const [projectFetchState, dispatch] = useReducer(reducer, initialState);
+    console.log('project: ', projectFetchState.data);
     useEffect(() => {
       (async function () {
         try {
@@ -128,7 +129,7 @@ const withProject = (UnwrappedComponent: ComponentType<InjectedProps>) => {
       <ProjectContextProvider>
         <UnwrappedComponent
           {...props}
-          {...ProjectFetchState}
+          {...projectFetchState}
           addCollection={(collection: Collection) => {
             dispatch({ type: 'ADD_COLLECTION', payload: collection });
           }}

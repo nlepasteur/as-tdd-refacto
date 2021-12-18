@@ -9,3 +9,4 @@ export type { GetMediums } from './actions/mediums';
 // ci-dessous correspond en fait à PartialProject
 export type { Project } from './reducers/projects';
 export type { PopUpError } from './reducers/popUpErrors';
+export type { AddPopUpErrorAction } from './actions/popUpErrors';

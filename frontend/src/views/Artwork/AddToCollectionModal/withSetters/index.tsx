@@ -3,6 +3,8 @@ import type { ComponentType } from 'react';
 import type { InjectedProps as AddToCollectionModalProps } from '..';
 import type { Collection } from '@types';
 import type { PopUpError } from 'application/types';
+/// libs
+import { useCallback } from 'react';
 
 const hasMessagePropertie = (arg: unknown): arg is { message: string } =>
   arg instanceof Object && 'message' in arg;
@@ -42,16 +44,26 @@ const createCollection =
   ) =>
   async (arg: { project_id: string; name: string }) => {
     try {
-      const response = await fetch('/collections', {
-        method: 'POST',
-        body: JSON.stringify(arg),
-      });
-      const collection = await response.json();
-      if (!response.ok) {
-        throw collection as Omit<PopUpError, 'id'>;
-      }
+      // const response = await fetch('/collections', {
+      //   method: 'POST',
+      //   body: JSON.stringify(arg),
+      // });
+      // const collection = await response.json();
+      // if (!response.ok) {
+      //   throw collection as Omit<PopUpError, 'id'>;
+      // }
       // ajouter collection à ProjectFetchState
-      successCallback(collection as Collection);
+      // successCallback(collection as Collection);
+      successCallback({
+        name: 'ma superbe nouvelle collection',
+        id: 'iri',
+        is_private: false,
+        projects_count: 1,
+        active_projects_count: 1,
+        small_square_image_url: '',
+        micro_square_image_url: '',
+        user_id: 'userId',
+      });
     } catch (e) {
       if (hasMessagePropertie(e)) {
         failureCallback(e);
@@ -76,13 +88,15 @@ const withSetters = (UnwrappedComponent: ComponentType<InjectedProps>) => {
     InjectedProps,
     'collections' | 'toggleAddToCollectionModal' | 'project_id' | 'in'
   > &
-    OwnProps) => (
-    <UnwrappedComponent
-      addToCollection={addToCollection(failureCallback, successCallback)}
-      createCollection={createCollection(failureCallback, successCallback)}
-      {...props}
-    />
-  );
+    OwnProps) => {
+    return (
+      <UnwrappedComponent
+        addToCollection={addToCollection(failureCallback, successCallback)}
+        createCollection={createCollection(failureCallback, successCallback)}
+        {...props}
+      />
+    );
+  };
   return WithSetters;
 };
 

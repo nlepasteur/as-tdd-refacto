@@ -3,7 +3,7 @@ import type { ComponentType } from 'react';
 import type { InjectedProps as PropsFromWithSetters } from './withSetters';
 import type { Collection } from '@types';
 // libs
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 // action creators
@@ -33,17 +33,21 @@ const Artwork: ComponentType<InjectedProps> = ({
     useContext(ProjectContext);
   const { state } = useLocation();
   const { id } = useParams();
+  //
+  // const successCallback = useCallback(() => {
+  //   dispatch(toggleAddToCollectionModal());
+  // }, [dispatch]);
+  //
+  const toggleAddToCollectionModal = useCallback(() => {
+    dispatch({ type: 'TOGGLE_ADD_TO_COLLECTION_MODAL' });
+  }, [dispatch]);
 
-  const createCollection = async (arg: {
-    project_id: string;
-    name: string;
-  }) => {
-    console.log('');
-  };
-  const addToCollection = async () => {
-    console.log('');
-  };
-
+  const failureCallback = useCallback(
+    (arg: { message: string }) => {
+      addPopUpError({ ...arg, id: nanoid() });
+    },
+    [addPopUpError]
+  );
   return (
     <StopScrollOnArtworkPageOverlayAntagonist>
       <div>
@@ -57,12 +61,13 @@ const Artwork: ComponentType<InjectedProps> = ({
           <AddToCollectionModal
             project_id={project.id as string}
             in={[]}
-            toggleAddToCollectionModal={() =>
-              dispatch(toggleAddToCollectionModal())
-            }
-            failureCallback={(arg: { message: string }) => {
-              addPopUpError({ ...arg, id: nanoid() });
-            }}
+            //
+            toggleAddToCollectionModal={toggleAddToCollectionModal}
+            // ici problème, pourquoi toggleAddToCollectionModal dispatch une action? il devrait toggle modal
+            // failureCallback={(arg: { message: string }) => {
+            //   addPopUpError({ ...arg, id: nanoid() });
+            // }}
+            failureCallback={failureCallback}
             successCallback={addCollection}
           />
         ) : null}

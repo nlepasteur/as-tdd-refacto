@@ -13,6 +13,8 @@ export const removePopUpError = (payload: PopUpError['id']) =>
     payload,
   } as const);
 
+export type AddPopUpErrorAction = ReturnType<typeof addPopUpError>;
+
 export type PopUpErrorMsgAction =
   | ReturnType<typeof addPopUpError>
   | ReturnType<typeof removePopUpError>;
