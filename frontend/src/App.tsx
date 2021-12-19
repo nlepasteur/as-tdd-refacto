@@ -8,13 +8,13 @@ import getShowSignupSigninModal from 'application/selectors/getShowSignupSigninM
 import SignupSigninModal from 'components/SignupSigninModal';
 import PopUpErrors from 'components/PopUpErrors';
 import Mosaic from 'views/Mosaic';
-import Artwork from 'views/Artwork';
+import Project from 'views/Project';
 // style
 import './App.css';
 // newly
 import { toggleSignupSigninModal } from 'application/actions/showSignupSigninModal';
-import Comments from 'views/Artwork/Comments';
-import AddToCollectionModal from 'views/Artwork/AddToCollectionModal';
+import Comments from 'src/views/Project/Comments';
+import AddToCollectionModal from 'src/views/Project/AddToCollectionModal';
 import FollowButton from 'components/FollowButton';
 import type { Following } from '@types';
 
@@ -45,7 +45,7 @@ const App = () => {
         <Route path={mosaicPath} element={<Mosaic />} />
       </Routes>
       <Routes>
-        <Route path="/artwork/:id" element={<Artwork />} />
+        <Route path="/artwork/:id" element={<Project />} />
       </Routes>
     </>
   );
