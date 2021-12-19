@@ -4,6 +4,7 @@ import type { PopUpErrorMsgAction } from '../actions/popUpErrors';
 export type PopUpError = {
   message: string;
   id: string;
+  color: 'blue' | 'red';
 };
 
 const reducer = (state: PopUpError[] = [], action: PopUpErrorMsgAction) => {

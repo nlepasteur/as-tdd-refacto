@@ -1,32 +1,30 @@
 // types
 import type { ComponentType } from 'react';
-import type { InjectedProps as AddToCollectionModalProps } from '../AddToCollectionModal';
 import type { Collection } from '@types';
 import type { PopUpError } from 'application/types';
+import type { InjectedProps as AddToCollectionModalProps } from '../AddToCollectionModal';
 // libs
-import { useContext, useCallback, createRef } from 'react';
+import { createRef, useCallback } from 'react';
 import { nanoid } from 'nanoid';
-// context
-import { ProjectContext } from '../../ProjectContextProvider';
-// action creators
-import { toggleAddToCollectionModal } from '../../ProjectContextProvider';
 
-export type InjectedProps = Pick<
+export type InjectedProps = Omit<
   AddToCollectionModalProps,
-  'collections' | 'project' | 'status'
+  'addToCollection' | 'createCollection' | 'closeModal'
 > & {
-  addPopUpError(arg: { message: string; id: string }): void;
+  addPopUpError(arg: {
+    message: string;
+    id: string;
+    color: 'red' | 'blue';
+  }): void;
   updateProjectCollections(collection: Collection): void;
+  toggleModal(): void;
 };
 
 const hasMessagePropertie = (arg: unknown): arg is { message: string } =>
   arg instanceof Object && 'message' in arg;
 
 const addToCollection =
-  (
-    failureCallback: (arg: Omit<PopUpError, 'id'>) => void,
-    successCallback: (arg: Collection) => void
-  ) =>
+  (successCallback: (arg: Collection) => void) =>
   async (arg: { project_id: string; collection_id: string }) => {
     try {
       const response = await fetch('/collections/add', {
@@ -35,27 +33,17 @@ const addToCollection =
       });
       const collection = await response.json();
       if (!response.ok) {
-        console.log('collection (response.json(): ', collection);
         throw collection as Omit<PopUpError, 'id'>;
       }
       successCallback(collection as Collection);
-      // inclut:
-      // updateProjectCollections(collection)
-      // toggleModal();
     } catch (e) {
-      console.log('directly in catch', e);
-      if (hasMessagePropertie(e)) {
-        console.log('has a message property');
-        failureCallback({ message: 'erreur!' });
-        // inclut addPopUpError
-      }
       // handle errors
     }
   };
 
 const createCollection =
   (
-    failureCallback: (arg: Omit<PopUpError, 'id'>) => void, // consiste à dispatch dans store message d'erreur, donc définit dans mapDispatch
+    failureCallback: (arg: Omit<PopUpError, 'id' | 'color'>) => void,
     successCallback: (arg: Collection) => void
   ) =>
   async (arg: { project_id: string; name: string }) => {
@@ -69,10 +57,6 @@ const createCollection =
         throw collection as Omit<PopUpError, 'id'>;
       }
       successCallback(collection as Collection);
-      // inclut:
-      // updateProjectCollections(collection)
-      // toggleModal();
-
       //   successCallback({
       //     name: 'ma superbe nouvelle collection',
       //     id: 'iri',
@@ -86,30 +70,21 @@ const createCollection =
     } catch (e) {
       if (hasMessagePropertie(e)) {
         failureCallback(e);
-        // addPopUpError
       }
       // handle errors
     }
   };
 
 const withSetters = (
-  UnwrappedComponent: ComponentType<
-    AddToCollectionModalProps & {
-      ref: any;
-    }
-  >
+  UnwrappedComponent: ComponentType<AddToCollectionModalProps & { ref: any }>
 ) => {
   const WithSetters = ({
     addPopUpError,
     updateProjectCollections,
+    toggleModal,
     ...props
   }: InjectedProps) => {
-    const { dispatch } = useContext(ProjectContext); // dispatch uniquement pour modal PAS POUR updateProjectCollections, venant de props directement puisque subtree
     const timeline = createRef<gsap.core.Timeline | null>();
-    const toggleModal = useCallback(() => {
-      dispatch(toggleAddToCollectionModal());
-    }, [dispatch]);
-
     const closeModal = useCallback(() => {
       if (
         timeline instanceof Object &&
@@ -130,20 +105,17 @@ const withSetters = (
 
     const failureCallback = useCallback(
       (arg: Pick<PopUpError, 'message'>) => {
-        addPopUpError({ ...arg, id: nanoid() });
+        addPopUpError({ ...arg, color: 'blue', id: nanoid() });
       },
       [addPopUpError]
     );
 
     const memoizedAddToCollection = useCallback(
       (arg: { project_id: string; collection_id: string }) => {
-        const addToCollectionWithCallbacks = addToCollection(
-          failureCallback,
-          successCallback
-        );
+        const addToCollectionWithCallbacks = addToCollection(successCallback);
         return addToCollectionWithCallbacks(arg);
       },
-      [failureCallback, successCallback]
+      [successCallback]
     );
 
     const memoizedCreateCollection = useCallback(
@@ -167,17 +139,8 @@ const withSetters = (
       />
     );
   };
+
   return WithSetters;
 };
 
 export default withSetters;
-
-type X = Pick<
-  AddToCollectionModalProps,
-  | 'addToCollection'
-  | 'closeModal'
-  | 'collections'
-  | 'createCollection'
-  | 'project'
-  | 'status'
->;

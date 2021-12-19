@@ -12,13 +12,13 @@ import { CgClose } from 'react-icons/cg';
 type ModalProps = {
   children: {
     main: ReactNode;
+    header: ReactNode;
   };
-  header: string;
   closeModal(): void;
 };
 
 const Modal = forwardRef<gsap.core.Timeline | null, ModalProps>(
-  ({ children: { main }, header, closeModal }, timeline) => {
+  ({ children: { main, header }, closeModal }, timeline) => {
     const modal = useRef(null);
     useOnClickOutside(modal, closeModal);
     useLayoutEffect(() => {

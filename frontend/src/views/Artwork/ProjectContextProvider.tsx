@@ -1,58 +1,99 @@
 // types
-import type { ReactNode, Dispatch } from 'react';
+import type { ReactNode } from 'react';
+import type { FetchStatus, Project, Collection, CompleteProject } from '@types';
 // libs
-import { createContext, useReducer } from 'react';
+import { createContext, useReducer, useState } from 'react';
 
-const initialState = {
-  showLikesModal: false,
-  showAddToCollectionModal: false,
-  votable_id: null,
+const projectFetchInitialState = {
+  status: 'init' as const,
+  error: null,
+  data: null,
 };
 
-type State = Readonly<typeof initialState> & { votable_id: null | string };
+type ProjectFetchState = {
+  status: FetchStatus;
+  error: null | string;
+  data: null | Project;
+};
 
-export const toggleLikesModal = () =>
-  ({
-    type: 'TOGGLE_LIKES_MODAL',
-  } as const);
+type ProjectFetchStateAction =
+  | { type: 'FETCHING' }
+  | { type: 'FAILURE'; payload: string }
+  | { type: 'SUCCESS'; payload: Project }
+  | { type: 'UPDATE_COLLECTIONS'; payload: Collection };
 
-export const toggleAddToCollectionModal = () =>
-  ({
-    type: 'TOGGLE_ADD_TO_COLLECTION_MODAL',
-  } as const);
-
-type ToggleLikesModalAction =
-  | ReturnType<typeof toggleLikesModal>
-  | ReturnType<typeof toggleAddToCollectionModal>;
-
-export type ArtworkContextAction = ToggleLikesModalAction;
-
-const reducer = (state = initialState, action: ArtworkContextAction): State => {
+const projectFetchReducer = (
+  state: ProjectFetchState = projectFetchInitialState,
+  action: ProjectFetchStateAction
+): ProjectFetchState => {
   switch (action.type) {
-    case 'TOGGLE_LIKES_MODAL':
-      return { ...state, showLikesModal: !state.showLikesModal };
-    case 'TOGGLE_ADD_TO_COLLECTION_MODAL':
+    case 'FETCHING':
+      return { ...state, status: 'fetching' };
+    case 'FAILURE':
+      return { ...state, error: action.payload, status: 'failure' };
+    case 'SUCCESS':
+      return { ...state, status: 'success', data: action.payload };
+    case 'UPDATE_COLLECTIONS':
+      const data = state.data as CompleteProject;
       return {
         ...state,
-        showAddToCollectionModal: !state.showAddToCollectionModal,
+        data: {
+          ...data,
+          collections: [...data.collections, action.payload],
+        },
       };
     default:
       return state;
   }
 };
 
-interface ProjectContext extends State {
-  dispatch: Dispatch<ArtworkContextAction>;
-}
+type ProjectContext = {
+  projectFetchState: ProjectFetchState;
+  updateProjectCollections(collection: Collection): void;
+  setProjectFetchState(action: ProjectFetchStateAction): void;
+  votable_id: string | null;
+  setVotableId(id: string): void;
+  showLikesModal: boolean;
+  showAddToCollectionModal: boolean;
+  toggleLikesModal(): void;
+  toggleAddToCollectionModal(): void;
+};
 
 export const ProjectContext = createContext<ProjectContext>(
   {} as unknown as ProjectContext
 );
 
 const ProjectContextProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [projectFetchState, dispatch] = useReducer(
+    projectFetchReducer,
+    projectFetchInitialState
+  );
+  const updateProjectCollections = (collection: Collection) =>
+    dispatch({ type: 'UPDATE_COLLECTIONS', payload: collection });
+  const setProjectFetchState = (action: ProjectFetchStateAction) =>
+    dispatch(action);
+  const [showLikesModal, toggleLikesModal] = useState(false);
+  const [showAddToCollectionModal, toggleAddToCollectionModal] =
+    useState(false);
+
+  const [votableId, setVotableId] = useState<null | string>(null);
   return (
-    <ProjectContext.Provider value={{ ...state, dispatch }}>
+    <ProjectContext.Provider
+      value={{
+        projectFetchState,
+        votable_id: votableId,
+        setVotableId,
+        setProjectFetchState,
+        updateProjectCollections,
+        toggleAddToCollectionModal: () => {
+          console.log('called');
+          toggleAddToCollectionModal(!showAddToCollectionModal);
+        },
+        toggleLikesModal: () => toggleLikesModal(!showLikesModal),
+        showAddToCollectionModal,
+        showLikesModal,
+      }}
+    >
       {children}
     </ProjectContext.Provider>
   );

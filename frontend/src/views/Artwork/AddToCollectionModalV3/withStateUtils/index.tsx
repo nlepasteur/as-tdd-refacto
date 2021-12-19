@@ -1,29 +1,14 @@
 // types
 import type { ComponentType } from 'react';
-import type { AppDispatch, PopUpError } from 'application/types';
 import type { FetchState, GenericFetchAction, Collection } from '@types';
 import type { InjectedProps as WithSettersProps } from '../withSetters';
 // libs
-import { useReducer, useEffect } from 'react';
-import { connect } from 'react-redux';
-// action creators
-import { addPopUpError } from 'application/actions/popUpErrors';
+import { useEffect, useReducer } from 'react';
 
-const mapDispatch = (dispatch: AppDispatch) => ({
-  addPopUpError: (popUpError: PopUpError) => {
-    dispatch(addPopUpError(popUpError));
-  },
-});
-
-export const connector = connect(null, mapDispatch);
-
-type PropsFromRedux = ReturnType<typeof mapDispatch>;
-
-type InjectedProps = Pick<
+export type InjectedProps = Pick<
   WithSettersProps,
-  'project' | 'updateProjectCollections'
-> &
-  PropsFromRedux;
+  'toggleModal' | 'updateProjectCollections' | 'project' | 'addPopUpError'
+>;
 
 const initialState = {
   status: 'init' as const,
@@ -51,10 +36,11 @@ const reducer = (
   }
 };
 
-const withCollections = (
+const withStateUtils = (
   UnwrappedComponent: ComponentType<WithSettersProps>
 ) => {
-  const WithCollections = (props: InjectedProps) => {
+  const WithStateUtils = (props: InjectedProps) => {
+    console.log('paaaaaarse');
     const [{ data: collections, status }, dispatch] = useReducer(
       reducer,
       initialState
@@ -74,12 +60,13 @@ const withCollections = (
     return (
       <UnwrappedComponent
         {...props}
-        status={status}
         collections={collections}
+        status={status}
       />
     );
   };
-  return WithCollections;
+
+  return WithStateUtils;
 };
 
-export default withCollections;
+export default withStateUtils;

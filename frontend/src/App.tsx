@@ -38,15 +38,15 @@ const App = () => {
       {showSignupSigninModal ? <SignupSigninModal /> : null}
       <FollowButton
         user={{ id: 'id', followed: false }}
-        invertFollowed={(following: Following) => console.log(following)}
+        successCallback={(following: Following) => console.log(following)}
       />
-      {/* <PopUpErrors />
+      <PopUpErrors />
       <Routes>
         <Route path={mosaicPath} element={<Mosaic />} />
       </Routes>
       <Routes>
         <Route path="/artwork/:id" element={<Artwork />} />
-      </Routes> */}
+      </Routes>
     </>
   );
 };

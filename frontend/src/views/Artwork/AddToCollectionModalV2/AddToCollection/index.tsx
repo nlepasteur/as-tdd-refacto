@@ -1,5 +1,6 @@
 // types
 import type { ComponentType } from 'react';
+import type { FetchStatus } from '@types';
 import type { InjectedProps as AddToCollectionViewProps } from '../AddToCollectionView';
 import type { InjectedProps as CreateCollectionViewProps } from '../CreateCollectionView';
 // libs
@@ -12,9 +13,12 @@ export type InjectedProps = Omit<
   CreateCollectionViewProps,
   'changeAddToCollectionModalView'
 > &
-  Omit<AddToCollectionViewProps, 'changeAddToCollectionModalView'>;
+  Omit<AddToCollectionViewProps, 'changeAddToCollectionModalView'> & {
+    status: FetchStatus;
+  };
 
 const AddToCollection: ComponentType<InjectedProps> = ({
+  status,
   project,
   collections,
   addToCollection,

@@ -6,9 +6,7 @@ import { forwardRef } from 'react';
 import Modal from 'components/Modal';
 import AddToCollection from '../AddToCollection';
 
-export type InjectedProps = AddToCollectionProps & {
-  closeModal(): void;
-};
+export type InjectedProps = AddToCollectionProps & { closeModal(): void };
 
 const AddToCollectionModal = forwardRef<
   gsap.core.Timeline | null,
@@ -22,8 +20,8 @@ const AddToCollectionModal = forwardRef<
   </Modal>
 ));
 
-const AddToCollectionDisplayName = 'AddToCollectionModal';
+const AddToCollectionModalDisplayName = 'AddToCollectionModal';
 
-AddToCollectionModal.displayName = AddToCollectionDisplayName;
+AddToCollectionModal.displayName = AddToCollectionModalDisplayName;
 
 export default AddToCollectionModal;

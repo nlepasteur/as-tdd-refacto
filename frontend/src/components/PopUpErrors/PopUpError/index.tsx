@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import { BsExclamationOctagon } from 'react-icons/bs';
 import { MdClose } from 'react-icons/md';
 
-type OwnProps = { id: string; message: string };
+type OwnProps = { id: string; message: string; color: 'blue' | 'red' };
 
 type InjectedProps = OwnProps &
   Pick<PropsFromWithPopUpErrors, 'removePopUpError'>;
@@ -16,6 +16,7 @@ type InjectedProps = OwnProps &
 const PopUpErrorMsg: ComponentType<InjectedProps> = ({
   message,
   id,
+  color,
   removePopUpError,
 }) => {
   const el = useRef(null);
@@ -50,7 +51,7 @@ const PopUpErrorMsg: ComponentType<InjectedProps> = ({
       />
       <BsExclamationOctagon
         style={{
-          color: '#d9534f',
+          color: color === 'red' ? '#d9534f' : 'blue',
         }}
       />
       {message}
